@@ -4,7 +4,7 @@ This project is implemented as part of the Bachelor's program in Computer Scienc
 
 ## Problem statement
 
-There are various pathfinding algorithms in existence, each with their strenghts and weaknesses. This project compares the performances of some of the most prominent pathfinding algorithms for a number of concrete 2D maps.
+There are various pathfinding algorithms in existence, each with their strengths and weaknesses. This project aims to compare the performances of some of the most prominent pathfinding algorithms for a number of concrete 2D maps.
 
 ## Data structures and algorithms
 
