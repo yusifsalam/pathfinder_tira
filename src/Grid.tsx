@@ -18,7 +18,7 @@ const Grid: React.FC<GridProps> = ({ mapName }) => {
 
   return (
     <div>
-      Grid
+      Map properties:
       <p>Height {map?.height}</p>
       <p>Width {map?.width}</p>
     </div>
