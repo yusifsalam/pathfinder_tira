@@ -7,16 +7,17 @@ This document contains the time spent on the project.
 | Week  | Time (h) |
 | ----- | -------- |
 | 1     | 3        |
-| 2     | x        |
+| 2     | 4        |
 | 3     | x        |
 | 4     | x        |
 | 5     | x        |
 | 6     | x        |
 | 7     | x        |
-| Total | 3        |
+| Total | 7        |
 
 ## Week 1
 
 | Date       | h   | description                                 |
 | ---------- | --- | ------------------------------------------- |
 | 30.10.2020 | 3   | Project creation and initial idea pondering |
+| 31.10.2020 | 4   | Reading in map data                         |
