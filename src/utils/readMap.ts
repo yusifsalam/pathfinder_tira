@@ -1,4 +1,4 @@
-export const readMap = async (mapName: String) => {
+const readMap = async (mapName: String) => {
   const text = await fetch(`maps/${mapName}`)
   return await text.text()
 }
