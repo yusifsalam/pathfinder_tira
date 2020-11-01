@@ -1,5 +1,6 @@
 {
   "maps": [
+    { "file": "maze32-0-0.map", "name": "Maze 0-0" },
     { "file": "maze512-1-0.map", "name": "Maze 1-0" },
     { "file": "maze512-1-1.map ", "name": "Maze 1-1" },
     { "file": "maze512-1-2.map ", "name": "Maze 1-2" },
