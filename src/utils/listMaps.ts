@@ -1,4 +1,5 @@
+import data from '../maps/allMaps'
+
 export const listMaps = async () => {
-  const res = await fetch('maps/allMaps.json')
-  return await res.json()
+  return data
 }
