@@ -1,3 +1,7 @@
+/**
+ * Helper function that reads in data from the map
+ * @param mapName name of the map to be read in
+ */
 const readMap = async (mapName: String) => {
   if (mapName === '') return null
   const data = await import(`../maps/${mapName}.ts`)
@@ -5,6 +9,10 @@ const readMap = async (mapName: String) => {
   return data.default
 }
 
+/**
+ * Parses the map object
+ * @param mapName name of the map to be read in
+ */
 export const parseMap = async (mapName: String): Promise<MapObject> => {
   const mapText = await readMap(mapName)
   if (!mapText) return null

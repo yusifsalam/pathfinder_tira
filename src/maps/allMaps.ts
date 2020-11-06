@@ -1,3 +1,6 @@
+/**
+ * List of available maps
+ */
 const data = {
   maps: [
     { file: 'maze32-0-0', name: 'Maze 0-0' },
