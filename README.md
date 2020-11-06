@@ -1,5 +1,7 @@
 # Pathfinder algorithms
 
+[![codecov](https://codecov.io/gh/yusifsalam/pathfinder_tira/branch/main/graph/badge.svg?token=7WFH83VS5H)](https://codecov.io/gh/yusifsalam/pathfinder_tira)
+
 This project is part of the project course Data Structures and Algorithms at the University of Helsinki.  
 The aim of the project is to compare the performance of pathfinding algorithms.
 
