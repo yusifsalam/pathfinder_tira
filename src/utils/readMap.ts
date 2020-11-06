@@ -1,22 +1,28 @@
 const readMap = async (mapName: String) => {
-  const text = await fetch(`maps/${mapName}`)
-  return await text.text()
+  if (mapName === '') return null
+  const data = await import(`../maps/${mapName}.ts`)
+
+  return data.default
 }
 
 export const parseMap = async (mapName: String): Promise<MapObject> => {
   const mapText = await readMap(mapName)
+  if (!mapText) return null
   const parts = mapText.split('\n')
   const type = parts.shift()!.split(' ')[1]
   const height = parseInt(parts.shift()!.split(' ')[1])
   const width = parseInt(parts.shift()!.split(' ')[1])
   parts.shift()
-  parts.pop()
-  const grid = parts.map((part) => part.split(''))
+
+  const testGrid = parts.flatMap((line, i) =>
+    line.split('').map((char, j) => [i, j, char === '@' ? 1 : 0])
+  )
+
   const mapObject = {
     type,
     height,
     width,
-    grid,
+    grid: testGrid,
   }
   return mapObject
 }
