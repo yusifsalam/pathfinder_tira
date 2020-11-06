@@ -16,3 +16,4 @@ Each week's progress can be easily viewed with the [tags](https://github.com/yus
 ## Weekly reports
 
 - [Week 1](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Weekly%20reports/Week1.md)
+- [Week 2](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Weekly%20reports/Week2.md)
