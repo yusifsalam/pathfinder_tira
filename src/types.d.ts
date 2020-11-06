@@ -4,5 +4,5 @@ interface MapObject {
   type: string
   height: number
   width: number
-  grid: string[][]
+  grid: number[][]
 }

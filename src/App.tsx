@@ -1,6 +1,6 @@
 import React, { SyntheticEvent, useEffect, useState } from 'react'
 import Grid from './Grid'
-import { Box, Select, Heading } from '@chakra-ui/core'
+import { Flex, Select, Heading } from '@chakra-ui/core'
 import { listMaps } from './utils/listMaps'
 
 interface MapFile {
@@ -14,7 +14,7 @@ function App() {
   useEffect(() => {
     const getMaps = async () => {
       const data = await listMaps()
-      const maps = data.maps
+      const maps = data.maps as [MapFile]
       setMapList(maps)
     }
     getMaps()
@@ -25,8 +25,8 @@ function App() {
     setSelectedMap(target.value)
   }
   return (
-    <Box p={5}>
-      <Heading>Pathfiding algorithm comparison</Heading>
+    <Flex p={5} flexDir='column' maxH='100vh'>
+      <Heading>Pathfinding algorithm comparison</Heading>
       <Select
         pt={2}
         pb={2}
@@ -41,7 +41,7 @@ function App() {
         ))}
       </Select>
       <Grid mapName={selectedMap} />
-    </Box>
+    </Flex>
   )
 }
 
