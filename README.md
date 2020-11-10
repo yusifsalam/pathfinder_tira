@@ -9,6 +9,8 @@ Each week's progress can be easily viewed with the [tags](https://github.com/yus
 
 ## Documentation
 
+[Quick manual](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Usage.md)
+
 [Project specification](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Specification.md)
 
 [Hour report](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Hour_report.md)
