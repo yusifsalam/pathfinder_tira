@@ -8,7 +8,7 @@ There are various pathfinding algorithms in existence, each with their strengths
 
 ## Data structures and algorithms
 
-The exact algorithms used in comparisons are subject to change but tentatively they are BFS/DFS, Dijkstra and A-star.
+The algorithms used in comparisons are A-star and JPS. Dijkstra algorithm can also be added later, since it's very close to A-star.
 
 Data structures to be implemented are priority queue, stack and different array operations. These data structures are known requirements for solving graph/node problems. Because the course does not allow for the use of ready-made data structures, they will have to be implemented from scratch.
 
