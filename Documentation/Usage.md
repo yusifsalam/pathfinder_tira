@@ -1,7 +1,7 @@
 # Requirements
 
 - node 14
-- yarn or npm (this project uses yarn, npm users will have to convert the yarn commands to corresponding npm ones)
+- yarn or npm (this project uses yarn, npm users will have to convert yarn commands to corresponding npm ones)
 
 # Getting started
 
