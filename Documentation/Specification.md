@@ -25,6 +25,5 @@ The program is a simple web app (most likely React), written in TypeScript. Chak
 ## Sources
 
 - Tietorakenteet ja algoritmit course
-- https://en.wikipedia.org/wiki/Breadth-first_search
-- https://en.wikipedia.org/wiki/Depth-first_search
-- https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+- A\* Pathfinding (E01: algorithm explanation) by Sebastian Lague: https://youtu.be/-L-WgKMFuhE
+- https://brilliant.org/wiki/a-star-search/
