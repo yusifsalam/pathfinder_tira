@@ -15,7 +15,7 @@ Each week's progress can be easily viewed with the [tags](https://github.com/yus
 
 [Testing](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Testing.md)
 
-[Imlementation](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Implementation.md)
+[Implementation](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Implementation.md)
 
 [Hour report](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Hour_report.md)
 
