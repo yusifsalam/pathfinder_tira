@@ -13,6 +13,10 @@ Each week's progress can be easily viewed with the [tags](https://github.com/yus
 
 [Project specification](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Specification.md)
 
+[Testing](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Testing.md)
+
+[Imlementation](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Implementation.md)
+
 [Hour report](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Hour_report.md)
 
 ## Weekly reports
@@ -20,7 +24,7 @@ Each week's progress can be easily viewed with the [tags](https://github.com/yus
 - [Week 1](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Weekly%20reports/Week1.md)
 - [Week 2](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Weekly%20reports/Week2.md)
 - [Week 3](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Weekly%20reports/Week3.md)
-    <!-- - [Week 4](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Weekly%20reports/Week4.md) -->
+- [Week 4](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Weekly%20reports/Week4.md)
     <!-- - [Week 5](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Weekly%20reports/Week5.md) -->
     <!-- - [Week 6](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Weekly%20reports/Week6.md) -->
     <!-- - [Week 7](https://github.com/yusifsalam/pathfinder_tira/blob/main/Documentation/Weekly%20reports/Week7.md) -->
