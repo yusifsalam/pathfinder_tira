@@ -9,11 +9,11 @@ This document contains the time spent on the project.
 | 1     | 3        |
 | 2     | 15.5     |
 | 3     | 4        |
-| 4     | x        |
+| 4     | 1.5      |
 | 5     | x        |
 | 6     | x        |
 | 7     | x        |
-| Total | 22.5     |
+| Total | 24       |
 
 ## Week 1
 
@@ -25,3 +25,4 @@ This document contains the time spent on the project.
 | 06.11      | 3.5 | Auto doc generation, test and coverage report       |
 | 10.11      | 3   | Get familiar with A\* algorithm, start writing code |
 | 13.11      | 1   | Reporting                                           |
+| 20.11      | 1.5 | Documentation                                       |
