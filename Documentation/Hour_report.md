@@ -10,10 +10,10 @@ This document contains the time spent on the project.
 | 2     | 15.5     |
 | 3     | 4        |
 | 4     | 1.5      |
-| 5     | x        |
+| 5     | 1        |
 | 6     | x        |
 | 7     | x        |
-| Total | 24       |
+| Total | 25       |
 
 ## Week 1
 
@@ -26,3 +26,4 @@ This document contains the time spent on the project.
 | 10.11      | 3   | Get familiar with A\* algorithm, start writing code |
 | 13.11      | 1   | Reporting                                           |
 | 20.11      | 1.5 | Documentation                                       |
+| 28.11      | 1   | Refactor bad code                                   |
