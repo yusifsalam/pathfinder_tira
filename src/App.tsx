@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Grid from './Grid'
 import { Flex, Select, Heading } from '@chakra-ui/core'
 import { listMaps } from './utils/listMaps'
@@ -10,19 +10,19 @@ interface MapFile {
 
 function App() {
   const [selectedMap, setSelectedMap] = useState('')
-  const [mapList, setMapList] = useState<null | [MapFile]>(null)
+  const [mapList, setMapList] = useState<null | MapFile[]>(null)
   useEffect(() => {
     const getMaps = async () => {
       const data = await listMaps()
-      const maps = data.maps as [MapFile]
+      const maps = data.maps
       setMapList(maps)
     }
     getMaps()
   }, [setMapList])
 
-  const handleSelectChange = (e: SyntheticEvent) => {
-    const target = e.target as HTMLInputElement
-    setSelectedMap(target.value)
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    e.preventDefault()
+    setSelectedMap(e.target.value)
   }
   return (
     <Flex p={5} flexDir='column' maxH='100vh'>
