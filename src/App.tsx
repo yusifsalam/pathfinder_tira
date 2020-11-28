@@ -3,11 +3,6 @@ import Grid from './Grid'
 import { Flex, Select, Heading } from '@chakra-ui/core'
 import { listMaps } from './utils/listMaps'
 
-interface MapFile {
-  file: string
-  name: string
-}
-
 function App() {
   const [selectedMap, setSelectedMap] = useState('')
   const [mapList, setMapList] = useState<null | MapFile[]>(null)

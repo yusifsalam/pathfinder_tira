@@ -6,3 +6,8 @@ interface MapObject {
   width: number
   grid: number[][]
 }
+
+interface MapFile {
+  file: string
+  name: string
+}

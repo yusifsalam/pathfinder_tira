@@ -22,7 +22,7 @@ export const parseMap = async (mapName: String): Promise<MapObject> => {
   const width = parseInt(parts.shift()!.split(' ')[1])
   parts.shift()
 
-  const testGrid = parts.flatMap((line, i) =>
+  const grid = parts.flatMap((line, i) =>
     line.split('').map((char, j) => [i, j, char === '@' ? 1 : 0])
   )
 
@@ -30,7 +30,7 @@ export const parseMap = async (mapName: String): Promise<MapObject> => {
     type,
     height,
     width,
-    grid: testGrid,
+    grid,
   }
   return mapObject
 }
