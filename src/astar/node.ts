@@ -1,10 +1,3 @@
-interface INodeConstructor {
-  id: number
-  positionX: number
-  positionY: number
-  isWalkable?: boolean
-}
-
 export class Node {
   id: number
   positionX: number
@@ -33,7 +26,7 @@ export class Node {
    * @private
    */
   private calculateFValue(): void {
-    this._fValue = this._gValue + this._hValue;
+    this._fValue = this._gValue + this._hValue
   }
 
   /**
@@ -41,7 +34,7 @@ export class Node {
    * @param value
    */
   set gValue(value: number) {
-    this._gValue = value;
+    this._gValue = value
     this.calculateFValue()
   }
 
@@ -50,7 +43,7 @@ export class Node {
    * @param value
    */
   set hValue(value: number) {
-    this._hValue = value;
+    this._hValue = value
     this.calculateFValue()
   }
 
@@ -59,7 +52,7 @@ export class Node {
    * @param value
    */
   set isWalkable(value: boolean) {
-    this._isWalkable = value;
+    this._isWalkable = value
   }
 
   /**
@@ -67,42 +60,41 @@ export class Node {
    * @param value
    */
   set parentNode(value: Node) {
-    this._parentNode = value;
+    this._parentNode = value
   }
 
   /**
    * Gets the f-value of a node
    */
   get fValue(): number {
-    return this._fValue;
+    return this._fValue
   }
 
   /**
    * Gets the g-value of a node
    */
   get gValue(): number {
-    return this._gValue;
+    return this._gValue
   }
 
   /**
    * Gets the h-value of a node
    */
   get hValue(): number {
-    return this._hValue;
+    return this._hValue
   }
 
   /**
    * Gets the boolean value of the walkability of a node
    */
   get isWalkable(): boolean {
-    return this._isWalkable;
+    return this._isWalkable
   }
 
   /**
    * Gets the parent Node of a node
    */
   get parentNode(): Node {
-    return this._parentNode;
+    return this._parentNode
   }
-
 }

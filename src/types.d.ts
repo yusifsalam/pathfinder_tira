@@ -11,3 +11,13 @@ interface MapFile {
   file: string
   name: string
 }
+
+interface IPoint {
+  positionX: number
+  positionY: number
+}
+
+interface INodeConstructor extends IPoint {
+  id: number
+  isWalkable?: boolean
+}

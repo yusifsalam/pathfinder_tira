@@ -1,9 +1,9 @@
-interface Node {
-  positionX: number
-  positionY: number
-}
-
-export const heuristic = (n1: Node, n2: Node): number => {
+/**
+ * Manhattan distance heuristic function
+ * @param n1 Starting node
+ * @param n2 Destination node
+ */
+export const heuristicManhattan = (n1: IPoint, n2: IPoint): number => {
   const xDiff =
     n1.positionX >= n2.positionX
       ? n1.positionX - n2.positionX
