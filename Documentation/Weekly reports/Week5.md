@@ -6,11 +6,11 @@ This week I refactored some bad code that I wrote earlier.
 
 ## The progress
 
-Not much progress in terms of the actual program functionality.
+Not too much progress in terms of the actual program functionality. Two heuristic functions were implemented - they are Manhattan and Octile.
 
 ## Learning outcomes
 
-None
+Learned something about heuristic functions.
 
 ## Problems
 

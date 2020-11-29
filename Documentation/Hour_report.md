@@ -10,10 +10,10 @@ This document contains the time spent on the project.
 | 2     | 15.5     |
 | 3     | 4        |
 | 4     | 1.5      |
-| 5     | 1        |
+| 5     | 2        |
 | 6     | x        |
 | 7     | x        |
-| Total | 25       |
+| Total | 26       |
 
 ## Week 1
 
@@ -27,3 +27,4 @@ This document contains the time spent on the project.
 | 13.11      | 1   | Reporting                                           |
 | 20.11      | 1.5 | Documentation                                       |
 | 28.11      | 1   | Refactor bad code                                   |
+| 29.11      | 1   | Heuristic function implementation                   |

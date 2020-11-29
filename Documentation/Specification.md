@@ -27,3 +27,4 @@ The program is a simple web app (most likely React), written in TypeScript. Chak
 - Tietorakenteet ja algoritmit course
 - A\* Pathfinding (E01: algorithm explanation) by Sebastian Lague: https://youtu.be/-L-WgKMFuhE
 - https://brilliant.org/wiki/a-star-search/
+- http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
