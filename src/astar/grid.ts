@@ -1,6 +1,8 @@
 import { Node } from './node'
 
 interface IGridConstructor {
+  height: number
+  width: number
   grid: number[][]
 }
 
@@ -10,8 +12,8 @@ export class Grid {
   grid: Node[][]
 
   constructor(params: IGridConstructor) {
-    this.width = params.grid[0].length
-    this.height = params.grid.length
+    this.width = params.width
+    this.height = params.height
     this.grid = this.createGrid(this.width, this.height, params.grid)
   }
 
@@ -36,7 +38,7 @@ export class Grid {
           id: id,
           positionX: i,
           positionY: j,
-          isWalkable: grid[j][i] === 1,
+          isWalkable: grid[id][2] === 0,
         })
         id++
       }
