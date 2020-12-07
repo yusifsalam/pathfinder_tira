@@ -10,6 +10,9 @@ export class Node {
   private _isWalkable: boolean
   private _parentNode: Node
 
+  private _isOnOpenList: boolean
+  private _isOnClosedList: boolean
+
   constructor(params: INodeConstructor) {
     this.id = params.id
     this.positionX = params.positionX
@@ -19,6 +22,8 @@ export class Node {
     this._hValue = 0
     this._isWalkable = params.isWalkable
     this._parentNode = null
+    this._isOnOpenList = false
+    this._isOnClosedList = false
   }
 
   /**
@@ -64,6 +69,20 @@ export class Node {
   }
 
   /**
+   * Set whether the Node is on the open list
+   */
+  set isOnOpenList(value: boolean) {
+    this._isOnOpenList = value
+  }
+
+  /**
+   * Set whether the Node is on the closed list
+   */
+  set isOnClosedList(value: boolean) {
+    this._isOnClosedList = value
+  }
+
+  /**
    * Gets the f-value of a node
    */
   get fValue(): number {
@@ -89,6 +108,20 @@ export class Node {
    */
   get isWalkable(): boolean {
     return this._isWalkable
+  }
+
+  /**
+   * Return true if Node is on the open list otherwise false
+   */
+  get isOnOpenList(): boolean {
+    return this._isOnOpenList
+  }
+
+  /**
+   * Return true if Node is on the closed list otherwise false
+   */
+  get isOnClosedList(): boolean {
+    return this._isOnClosedList
   }
 
   /**
