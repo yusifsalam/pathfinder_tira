@@ -16,7 +16,7 @@ const readMap = async (mapName: String) => {
 export const parseMap = async (mapName: String): Promise<MapObject> => {
   const mapText = await readMap(mapName)
   if (!mapText) return null
-  const parts = mapText.split('\n')
+  const parts: String[] = mapText.split('\n')
   const type = parts.shift()!.split(' ')[1]
   const height = parseInt(parts.shift()!.split(' ')[1])
   const width = parseInt(parts.shift()!.split(' ')[1])
