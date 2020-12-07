@@ -4,17 +4,38 @@ import { lowestFScore, removeNodeFromList } from '../utils/listOps'
 import { heuristicOctile } from './heuristic'
 
 interface AStarParams {
+  height: number
+  width: number
   grid: number[][]
 }
 
 export class AStar {
   private closedList: Node[] = []
   private openList: Node[] = []
-  private route: Node[] = []
   private grid: Grid
 
   constructor(params: AStarParams) {
-    this.grid = new Grid({ grid: params.grid })
+    this.grid = new Grid({
+      height: params.height,
+      width: params.width,
+      grid: params.grid,
+    })
+  }
+
+  public backtrackRoute(startNode: Node, endNode: Node): Node[] {
+    let route = [endNode]
+    console.log('endNode', endNode)
+    let currentNode: Node = endNode
+    if (!currentNode.parentNode) {
+      return []
+    }
+    while (currentNode.parentNode !== startNode) {
+      route.unshift(currentNode.parentNode)
+      currentNode = currentNode.parentNode
+    }
+    route.unshift(startNode)
+    console.log('route', route)
+    return route
   }
 
   public findPath(start: IPoint, end: IPoint): Node[] {
@@ -22,12 +43,12 @@ export class AStar {
     const endNode = this.grid.nodeAt(end)
 
     if (!startNode.isWalkable || !endNode.isWalkable) {
+      console.log('start or end nodes not walkable')
       return []
     }
-
+    startNode.gValue = 0
     this.openList.push(startNode)
     startNode.isOnOpenList = true
-    this.route.push(startNode)
 
     // Calculate heuristic values and preemptively add unwalkable Nodes to the closed list
     for (let j = 0; j < this.grid.height; j++) {
@@ -57,7 +78,8 @@ export class AStar {
       currentNode.isOnClosedList = true
 
       if (currentNode === endNode) {
-        return this.route
+        console.log('current node reached the end')
+        return this.backtrackRoute(startNode, currentNode)
       }
 
       const currentNeighbors = this.grid.getNeighbors({
@@ -76,9 +98,9 @@ export class AStar {
             ? Math.sqrt(2)
             : 1
         const tentativeGScore = currentNode.gValue + distanceToNeighbor
+
         if (tentativeGScore < neighbor.gValue) {
           neighbor.parentNode = currentNode
-          this.route.push(neighbor)
           neighbor.gValue = tentativeGScore
           if (!neighbor.isOnOpenList) {
             this.openList.push(neighbor)
@@ -87,6 +109,7 @@ export class AStar {
         }
       }
     }
-    return this.route
+    console.log('no route found')
+    return []
   }
 }
