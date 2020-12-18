@@ -18,7 +18,7 @@ export class Node {
     this.positionX = params.positionX
     this.positionY = params.positionY
     this._fValue = 0
-    this._gValue = Infinity
+    this._gValue = 0
     this._hValue = 0
     this._isWalkable = params.isWalkable
     this._parentNode = null
@@ -31,10 +31,7 @@ export class Node {
    * @private
    */
   private calculateFValue(): void {
-    if (this._gValue === Infinity) this._fValue = 0
-    else {
-      this._fValue = this._gValue + this._hValue
-    }
+    this._fValue = this._gValue + this._hValue
   }
 
   /**
