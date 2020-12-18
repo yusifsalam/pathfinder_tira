@@ -54,10 +54,7 @@ export class AStar {
     for (let j = 0; j < this.grid.height; j++) {
       for (let i = 0; i < this.grid.width; i++) {
         let currentNode = this.grid.nodeAt({ positionX: i, positionY: j })
-        if (!currentNode.isWalkable) {
-          this.closedList.push(currentNode)
-          currentNode.isOnClosedList = true
-        } else {
+        if (currentNode.isWalkable) {
           const hValue = heuristicOctile(
             {
               positionX: currentNode.positionX,
@@ -72,15 +69,16 @@ export class AStar {
 
     while (this.openList.length !== 0) {
       const currentNode = lowestFScore(this.openList)
-      this.openList = removeNodeFromList(currentNode, this.openList)
-      currentNode.isOnOpenList = false
-      this.closedList.push(currentNode)
-      currentNode.isOnClosedList = true
 
       if (currentNode === endNode) {
         console.log('current node reached the end')
         return this.backtrackRoute(startNode, currentNode)
       }
+
+      this.openList = removeNodeFromList(currentNode, this.openList)
+      currentNode.isOnOpenList = false
+      this.closedList.push(currentNode)
+      currentNode.isOnClosedList = true
 
       const currentNeighbors = this.grid.getNeighbors({
         positionX: currentNode.positionX,
@@ -88,24 +86,27 @@ export class AStar {
       })
 
       for (let neighbor of currentNeighbors) {
-        if (neighbor.isOnClosedList) {
-          continue
-        }
-        // Distance to neighbor is sqrt(2) if it's on a diogonal, otherwise 1
+        // invalid nodes are ignored
+        if (!neighbor || neighbor.isOnClosedList) continue
+
+        // Distance to neighbor is sqrt(2) if it's on a diagonal, otherwise 1
         const distanceToNeighbor =
           currentNode.positionX !== neighbor.positionX &&
           currentNode.positionY !== neighbor.positionY
             ? Math.sqrt(2)
             : 1
         const tentativeGScore = currentNode.gValue + distanceToNeighbor
-
-        if (tentativeGScore < neighbor.gValue) {
+        let gScoreUpdate = false
+        if (!neighbor.isOnOpenList) {
+          gScoreUpdate = true
+          neighbor.isOnOpenList = true
+          this.openList.push(neighbor)
+        } else if (tentativeGScore < neighbor.gValue) {
+          gScoreUpdate = true
+        }
+        if (gScoreUpdate) {
           neighbor.parentNode = currentNode
           neighbor.gValue = tentativeGScore
-          if (!neighbor.isOnOpenList) {
-            this.openList.push(neighbor)
-            neighbor.isOnOpenList = true
-          }
         }
       }
     }
