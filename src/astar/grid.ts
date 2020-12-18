@@ -52,6 +52,7 @@ export class Grid {
    * @param position Position of the node on the grid
    */
   public nodeAt(position: IPoint) {
+    if (!this.grid[position.positionY]) return null
     return this.grid[position.positionY][position.positionX]
   }
 
@@ -71,9 +72,13 @@ export class Grid {
   public getNeighbors(position: IPoint): Node[] {
     let neighbors: Node[] = []
     for (let j = position.positionY - 1; j <= position.positionY + 1; j++) {
-      for (let i = position.positionX; i <= position.positionX + 1; i++) {
-        if (this.isInsideGrid(position) && this.nodeAt(position).isWalkable) {
-          neighbors.push(this.nodeAt({ positionX: i, positionY: j }))
+      for (let i = position.positionX - 1; i <= position.positionX + 1; i++) {
+        if (
+          this.isInsideGrid({ positionX: i, positionY: j }) &&
+          this.nodeAt({ positionX: i, positionY: j })
+        ) {
+          if (this.nodeAt({ positionX: i, positionY: j }).isWalkable)
+            neighbors.push(this.nodeAt({ positionX: i, positionY: j }))
         }
       }
     }
