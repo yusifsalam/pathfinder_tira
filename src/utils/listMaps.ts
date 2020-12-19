@@ -1,4 +1,6 @@
 import data from '../maps/allMaps'
+import { MapFile } from '../types'
+
 /**
  * Reads in the list containing all available maps
  */

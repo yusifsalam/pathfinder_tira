@@ -14,6 +14,7 @@ import {
   UnorderedList,
 } from '@chakra-ui/core'
 import { AStar } from './astar/astar'
+import { MapObject, Heuristic } from './types'
 
 interface GridProps {
   mapName: String
@@ -43,6 +44,7 @@ const Grid: React.FC<GridProps> = ({ mapName }) => {
       grid: map.grid,
       height: map.height,
       width: map.width,
+      heuristic: Heuristic.Octile,
     })
 
     const res = aStar.findPath(

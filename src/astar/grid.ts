@@ -1,4 +1,5 @@
 import { Node } from './node'
+import { IPoint } from '../types'
 
 interface IGridConstructor {
   height: number

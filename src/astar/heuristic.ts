@@ -1,4 +1,5 @@
 import { absoluteDiff, minVal } from '../utils/math'
+import { IPoint } from '../types'
 
 /**
  * Manhattan distance heuristic function
@@ -23,4 +24,11 @@ export const heuristicOctile = (n1: IPoint, n2: IPoint): number => {
   const yDiff = absoluteDiff(n1.positionY, n2.positionY)
   const minDiff = minVal(xDiff, yDiff)
   return D1 * (xDiff + yDiff) + (D2 - 2 * D1) * minDiff
+}
+
+/**
+ * Heuristic function that always returns zero
+ */
+export const heuristicZero = (): number => {
+  return 0
 }

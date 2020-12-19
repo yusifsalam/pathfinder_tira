@@ -1,3 +1,5 @@
+import { MapObject } from '../types'
+
 /**
  * Helper function that reads in data from the map
  * @param mapName name of the map to be read in

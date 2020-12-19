@@ -1,3 +1,5 @@
+import { INodeConstructor } from '../types'
+
 export class Node {
   id: number
   positionX: number
