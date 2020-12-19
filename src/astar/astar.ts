@@ -4,7 +4,7 @@ import { lowestFScore, removeNodeFromList } from '../utils/listOps'
 import { heuristicOctile, heuristicManhattan, heuristicZero } from './heuristic'
 import { Heuristic, IPoint } from '../types'
 
-interface AStarParams {
+export interface AStarParams {
   height: number
   width: number
   grid: number[][]
