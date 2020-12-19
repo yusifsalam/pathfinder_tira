@@ -13,7 +13,6 @@ export interface AStarParams {
 }
 
 export class AStar {
-  private closedList: Node[] = []
   private openList: Node[] = []
   private grid: Grid
   private heuristic: Heuristic
@@ -31,11 +30,13 @@ export class AStar {
     const startNode = this.grid.nodeAt(start)
     const endNode = this.grid.nodeAt(end)
 
-    if (!startNode.isWalkable || !endNode.isWalkable) {
+    if (!startNode.isWalkable) {
       console.log('start or end nodes not walkable')
       return []
+    } else if (!endNode.isWalkable) {
+      console.log('end up not walkable')
+      return []
     }
-    startNode.gValue = 0
     this.openList.push(startNode)
     startNode.isOnOpenList = true
 
@@ -67,7 +68,6 @@ export class AStar {
 
       this.openList = removeNodeFromList(currentNode, this.openList)
       currentNode.isOnOpenList = false
-      this.closedList.push(currentNode)
       currentNode.isOnClosedList = true
 
       const currentNeighbors = this.grid.getNeighbors({
