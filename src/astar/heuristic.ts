@@ -1,4 +1,4 @@
-import { absoluteDiff, minVal } from '../utils/math'
+import { absoluteDiff, minVal } from '../helpers/math'
 import { IPoint, Heuristic } from '../types'
 
 /**

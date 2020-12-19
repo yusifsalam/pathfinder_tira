@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Grid from './Grid'
 import { Flex, Select, Heading } from '@chakra-ui/core'
-import { listMaps } from './utils/listMaps'
+import { listMaps } from './helpers/listMaps'
 import { MapFile } from './types'
 
 function App() {

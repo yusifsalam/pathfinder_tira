@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { parseMap } from './utils/readMap'
+import { parseMap } from './helpers/readMap'
 import {
   Flex,
   Heading,

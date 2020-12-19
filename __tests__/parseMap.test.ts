@@ -1,5 +1,5 @@
-import { parseMap } from '../src/utils/readMap'
-import { listMaps } from '../src/utils/listMaps'
+import { parseMap } from '../src/helpers/readMap'
+import { listMaps } from '../src/helpers/listMaps'
 
 describe('Testing reading in map data', () => {
   it('map list is correct', () => {

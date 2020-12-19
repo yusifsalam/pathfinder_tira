@@ -1,6 +1,6 @@
 import { Node } from './node'
 import { Grid } from './grid'
-import { lowestFScore, removeNodeFromList } from '../utils/listOps'
+import { lowestFScore, removeNodeFromList } from '../helpers/listOps'
 import { calculateHeuristic } from './heuristic'
 import { Heuristic, IPoint } from '../types'
 
