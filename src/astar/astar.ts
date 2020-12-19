@@ -8,7 +8,7 @@ export interface AStarParams {
   height: number
   width: number
   grid: number[][]
-  heuristic: Heuristic
+  heuristic?: Heuristic
 }
 
 export class AStar {
@@ -23,7 +23,7 @@ export class AStar {
       width: params.width,
       grid: params.grid,
     })
-    this.heuristic = params.heuristic
+    this.heuristic = params.heuristic || Heuristic.Octile
   }
 
   public backtrackRoute(startNode: Node, endNode: Node): Node[] {
