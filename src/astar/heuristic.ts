@@ -1,5 +1,5 @@
 import { absoluteDiff, minVal } from '../utils/math'
-import { IPoint } from '../types'
+import { IPoint, Heuristic } from '../types'
 
 /**
  * Manhattan distance heuristic function
@@ -31,4 +31,27 @@ export const heuristicOctile = (n1: IPoint, n2: IPoint): number => {
  */
 export const heuristicZero = (): number => {
   return 0
+}
+
+/**
+ * Calculates the value of the heuristic
+ * @param n1 Starting node
+ * @param n2 Destination node
+ * @param heuristic Heuristic function
+ */
+export function calculateHeuristic(
+  n1: IPoint,
+  n2: IPoint,
+  heuristic: Heuristic
+): number {
+  switch (heuristic) {
+    case Heuristic.Manhattan:
+      return heuristicManhattan(n1, n2)
+    case Heuristic.Octile:
+      return heuristicOctile(n1, n2)
+    case Heuristic.Zero:
+      return heuristicZero()
+    default:
+      return heuristicOctile(n1, n2)
+  }
 }

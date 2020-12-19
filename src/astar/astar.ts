@@ -1,7 +1,7 @@
 import { Node } from './node'
 import { Grid } from './grid'
 import { lowestFScore, removeNodeFromList } from '../utils/listOps'
-import { heuristicOctile, heuristicManhattan, heuristicZero } from './heuristic'
+import { calculateHeuristic } from './heuristic'
 import { Heuristic, IPoint } from '../types'
 
 export interface AStarParams {
@@ -42,19 +42,6 @@ export class AStar {
     return route
   }
 
-  public calculateHeuristic(n1: IPoint, n2: IPoint): number {
-    switch (this.heuristic) {
-      case Heuristic.Manhattan:
-        return heuristicManhattan(n1, n2)
-      case Heuristic.Octile:
-        return heuristicOctile(n1, n2)
-      case Heuristic.Zero:
-        return heuristicZero()
-      default:
-        return heuristicOctile(n1, n2)
-    }
-  }
-
   public findPath(start: IPoint, end: IPoint): Node[] {
     const startNode = this.grid.nodeAt(start)
     const endNode = this.grid.nodeAt(end)
@@ -72,12 +59,13 @@ export class AStar {
       for (let i = 0; i < this.grid.width; i++) {
         let currentNode = this.grid.nodeAt({ positionX: i, positionY: j })
         if (currentNode.isWalkable) {
-          const hValue = this.calculateHeuristic(
+          const hValue = calculateHeuristic(
             {
               positionX: currentNode.positionX,
               positionY: currentNode.positionY,
             },
-            { positionX: endNode.positionX, positionY: endNode.positionY }
+            { positionX: endNode.positionX, positionY: endNode.positionY },
+            this.heuristic
           )
           currentNode.hValue = hValue
         }
