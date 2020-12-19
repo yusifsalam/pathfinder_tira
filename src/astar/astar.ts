@@ -3,6 +3,7 @@ import { Grid } from './grid'
 import { lowestFScore, removeNodeFromList } from '../helpers/listOps'
 import { calculateHeuristic } from './heuristic'
 import { Heuristic, IPoint } from '../types'
+import { backtrackRoute } from '../helpers/backtrackRoute'
 
 export interface AStarParams {
   height: number
@@ -24,22 +25,6 @@ export class AStar {
       grid: params.grid,
     })
     this.heuristic = params.heuristic || Heuristic.Octile
-  }
-
-  public backtrackRoute(startNode: Node, endNode: Node): Node[] {
-    let route = [endNode]
-    console.log('endNode', endNode)
-    let currentNode: Node = endNode
-    if (!currentNode.parentNode) {
-      return []
-    }
-    while (currentNode.parentNode !== startNode) {
-      route.unshift(currentNode.parentNode)
-      currentNode = currentNode.parentNode
-    }
-    route.unshift(startNode)
-    console.log('route', route)
-    return route
   }
 
   public findPath(start: IPoint, end: IPoint): Node[] {
@@ -77,7 +62,7 @@ export class AStar {
 
       if (currentNode === endNode) {
         console.log('current node reached the end')
-        return this.backtrackRoute(startNode, currentNode)
+        return backtrackRoute(startNode, currentNode)
       }
 
       this.openList = removeNodeFromList(currentNode, this.openList)
