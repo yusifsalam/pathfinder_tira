@@ -17,6 +17,7 @@ import {
 import { AStar } from './astar/astar'
 import { Dijkstra } from './astar/dijkstra'
 import { MapObject } from './types'
+import { JPS } from './astar/jps'
 
 interface GridProps {
   mapName: String
@@ -30,6 +31,7 @@ interface GridPoint {
 enum Algorithm {
   Dijkstra = 'dijkstra',
   AStar = 'astar',
+  JPS = 'jps',
 }
 
 const Grid: React.FC<GridProps> = ({ mapName }) => {
@@ -50,6 +52,7 @@ const Grid: React.FC<GridProps> = ({ mapName }) => {
   const startPathSearch = (alg: Algorithm) => {
     if (alg === Algorithm.AStar) runAStar()
     else if (alg === Algorithm.Dijkstra) runDijkstra()
+    else if (alg === Algorithm.JPS) runJPS()
   }
 
   const runAStar = () => {
@@ -67,6 +70,23 @@ const Grid: React.FC<GridProps> = ({ mapName }) => {
     console.log('aStar', aStar)
     console.log('path', res)
     console.log(`Astar took ${aEnd - aStart} milleseconds`)
+  }
+
+  const runJPS = () => {
+    const jps = new JPS({
+      grid: map.grid,
+      height: map.height,
+      width: map.width,
+    })
+    const jpsStart = Date.now()
+    const res = jps.findPath(
+      { positionX: startPosition.x, positionY: startPosition.y },
+      { positionX: endPosition.x, positionY: endPosition.y }
+    )
+    const jpsEnd = Date.now()
+    console.log('jps', jps)
+    console.log('path', res)
+    console.log(`JPS took ${jpsEnd - jpsStart} milliseconds`)
   }
 
   const runDijkstra = () => {
