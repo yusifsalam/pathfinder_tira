@@ -10,10 +10,12 @@ import {
   NumberIncrementStepper,
   NumberInputField,
   NumberInputStepper,
+  Select,
   ListItem,
   UnorderedList,
 } from '@chakra-ui/core'
 import { AStar } from './astar/astar'
+import { Dijkstra } from './astar/dijkstra'
 import { MapObject, Heuristic } from './types'
 
 interface GridProps {
@@ -25,8 +27,14 @@ interface GridPoint {
   y: number
 }
 
+enum Algorithm {
+  Dijkstra = 'dijkstra',
+  AStar = 'astar',
+}
+
 const Grid: React.FC<GridProps> = ({ mapName }) => {
   const [map, setMap] = useState<null | MapObject>(null)
+  const [algorithm, setAlgorithm] = useState<Algorithm>(Algorithm.AStar)
   const [startPosition, setStartPosition] = useState<GridPoint>({ x: 0, y: 0 })
   const [endPosition, setEndPosition] = useState<GridPoint>({ x: 0, y: 0 })
   const [errors, setErrors] = useState<String[]>([])
@@ -39,20 +47,45 @@ const Grid: React.FC<GridProps> = ({ mapName }) => {
     getMapObject()
   }, [mapName, setMap])
 
-  const startPathSearch = () => {
+  const startPathSearch = (alg: Algorithm) => {
+    if (alg === Algorithm.AStar) runAStar()
+    else if (alg === Algorithm.Dijkstra) runDijkstra()
+  }
+
+  const runAStar = () => {
     const aStar = new AStar({
       grid: map.grid,
       height: map.height,
       width: map.width,
-      heuristic: Heuristic.Octile,
+      heuristic: Heuristic.Manhattan,
     })
-
+    const aStart = Date.now()
     const res = aStar.findPath(
       { positionX: startPosition.x, positionY: startPosition.y },
       { positionX: endPosition.x, positionY: endPosition.y }
     )
+    const aEnd = Date.now()
     console.log('aStar', aStar)
     console.log('path', res)
+    console.log(`Astar took ${aEnd - aStart} milleseconds`)
+  }
+
+  const runDijkstra = () => {
+    const dij = new Dijkstra({
+      grid: map.grid,
+      height: map.height,
+      width: map.width,
+    })
+    const dijStart = Date.now()
+    const resD = dij.findPath(
+      { positionX: startPosition.x, positionY: startPosition.y },
+      { positionX: endPosition.x, positionY: endPosition.y }
+    )
+    const dijEnd = Date.now()
+
+    console.log('dij', dij)
+    console.log('path Dij', resD)
+    console.log(`Dijkstra took ${dijEnd - dijStart} milliseconds`)
   }
 
   return (
@@ -168,10 +201,23 @@ const Grid: React.FC<GridProps> = ({ mapName }) => {
               </NumberInputStepper>
             </NumberInput>
           </Flex>
+          <Flex>
+            <Select
+              placeholder='Select algorithm'
+              onChange={(e) => setAlgorithm(Algorithm[e.target.value])}
+              maxW={300}
+            >
+              {Object.keys(Algorithm).map((a) => (
+                <option value={a} key={a}>
+                  {a}
+                </option>
+              ))}
+            </Select>
+          </Flex>
           <Button
             maxW={300}
             disabled={errors.length !== 0}
-            onClick={startPathSearch}
+            onClick={() => startPathSearch(algorithm)}
           >
             Start
           </Button>
