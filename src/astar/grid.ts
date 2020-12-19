@@ -53,8 +53,11 @@ export class Grid {
    * @param position Position of the node on the grid
    */
   public nodeAt(position: IPoint) {
-    if (!this.grid[position.positionY]) return null
-    return this.grid[position.positionY][position.positionX]
+    if (this.grid[position.positionY] === undefined) return null
+    return (
+      this.isInsideGrid(position) &&
+      this.grid[position.positionY][position.positionX]
+    )
   }
 
   public isInsideGrid(position: IPoint): boolean {
