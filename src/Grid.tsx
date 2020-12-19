@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/core'
 import { AStar } from './astar/astar'
 import { Dijkstra } from './astar/dijkstra'
-import { MapObject, Heuristic } from './types'
+import { MapObject } from './types'
 
 interface GridProps {
   mapName: String
@@ -57,7 +57,6 @@ const Grid: React.FC<GridProps> = ({ mapName }) => {
       grid: map.grid,
       height: map.height,
       width: map.width,
-      heuristic: Heuristic.Manhattan,
     })
     const aStart = Date.now()
     const res = aStar.findPath(
