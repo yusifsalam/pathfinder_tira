@@ -22,6 +22,11 @@ export class JPS {
     this.heuristic = params.heuristic || Heuristic.Octile
   }
 
+  /**
+   * Finds the shortest path from start to end
+   * @param start Start Node
+   * @param end End Node
+   */
   public findPath(start: IPoint, end: IPoint): Node[] {
     const startNode = this.grid.nodeAt(start)
     const endNode = this.grid.nodeAt(end)
@@ -198,6 +203,11 @@ export class JPS {
     }
   }
 
+  /**
+   * Finds pruned neighbors for a given Node and Grid
+   * @param node Node
+   * @param g Grid
+   */
   private findPrunedNeighbors(node: Node, g: Grid): Node[] {
     if (!node.parentNode)
       return g.getNeighbors({
@@ -213,6 +223,7 @@ export class JPS {
         (node.positionY - node.parentNode.positionY) /
         maxVal(absoluteDiff(node.positionY, node.parentNode.positionY), 1)
 
+      // diagonal
       if (dx !== 0 && dy !== 0) {
         const p1: IPoint = {
           positionX: node.positionX,
@@ -237,8 +248,10 @@ export class JPS {
           g.nodeAt(p2).isWalkable
         )
           neighbors.push(g.nodeAt(p3))
-      } else {
-        let nextWalkable
+      }
+      // vertical and horizontal
+      else {
+        let nextWalkable: boolean
         if (dx !== 0) {
           const nextPoint: IPoint = {
             positionX: node.positionX + dx,
