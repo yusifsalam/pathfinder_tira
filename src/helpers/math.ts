@@ -14,5 +14,14 @@ export const absoluteDiff = (a: number, b: number): number => {
  * @param b Second argument
  */
 export const minVal = (a: number, b: number): number => {
+  return a > b ? b : a
+}
+
+/**
+ * Calculates the larger number from the two arguments
+ * @param a First argument
+ * @param b Second argument
+ */
+export const maxVal = (a: number, b: number): number => {
   return a > b ? a : b
 }
