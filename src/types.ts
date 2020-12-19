@@ -25,3 +25,5 @@ export enum Heuristic {
   Octile = 'octile',
   Zero = 'zero',
 }
+
+export type JumpPoint = IPoint | null
