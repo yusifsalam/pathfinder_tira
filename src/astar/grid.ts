@@ -82,7 +82,8 @@ export class Grid {
           this.nodeAt({ positionX: i, positionY: j })
         ) {
           if (this.nodeAt({ positionX: i, positionY: j }).isWalkable)
-            neighbors.push(this.nodeAt({ positionX: i, positionY: j }))
+            if (!(position.positionX === i && position.positionY === j))
+              neighbors.push(this.nodeAt({ positionX: i, positionY: j }))
         }
       }
     }
