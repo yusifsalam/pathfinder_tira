@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { parseMap } from './helpers/readMap'
+import { parseMap } from '../helpers/readMap'
 import {
   Flex,
   Heading,
@@ -14,10 +14,10 @@ import {
   ListItem,
   UnorderedList,
 } from '@chakra-ui/core'
-import { AStar } from './algorithms/astar'
-import { Dijkstra } from './algorithms/dijkstra'
-import { MapObject } from './types'
-import { JPS } from './algorithms/jps'
+import { AStar } from '../algorithms/astar'
+import { Dijkstra } from '../algorithms/dijkstra'
+import { MapObject } from '../types'
+import { JPS } from '../algorithms/jps'
 
 interface GridProps {
   mapName: String
