@@ -36,41 +36,45 @@ export class JPS {
       console.log('start or end nodes not walkable')
       return []
     } else if (!endNode.isWalkable) {
-      console.log('end up not walkable')
+      console.log('end node not walkable')
       return []
     }
+    startNode.gValue = 0
     this.openList.push(startNode)
     startNode.isOnOpenList = true
 
-    // Calculate heuristic values and preemptively add unwalkable Nodes to the closed list
-    for (let j = 0; j < this.grid.height; j++) {
-      for (let i = 0; i < this.grid.width; i++) {
-        let currentNode = this.grid.nodeAt({ positionX: i, positionY: j })
-        if (currentNode.isWalkable) {
-          const hValue = calculateHeuristic(
-            {
-              positionX: currentNode.positionX,
-              positionY: currentNode.positionY,
-            },
-            { positionX: endNode.positionX, positionY: endNode.positionY },
-            this.heuristic
-          )
-          currentNode.hValue = hValue
-        }
-      }
-    }
+    // // Calculate heuristic values and preemptively add unwalkable Nodes to the closed list
+    // for (let j = 0; j < this.grid.height; j++) {
+    //   for (let i = 0; i < this.grid.width; i++) {
+    //     let currentNode = this.grid.nodeAt({ positionX: i, positionY: j })
+    //     if (currentNode.isWalkable) {
+    //       const hValue = calculateHeuristic(
+    //         {
+    //           positionX: currentNode.positionX,
+    //           positionY: currentNode.positionY,
+    //         },
+    //         { positionX: endNode.positionX, positionY: endNode.positionY },
+    //         this.heuristic
+    //       )
+    //       currentNode.hValue = hValue
+    //     }
+    //   }
+    // }
 
     while (this.openList.length !== 0) {
       const currentNode = lowestFScore(this.openList)
-
-      if (currentNode === endNode) {
+      this.openList = removeNodeFromList(currentNode, this.openList)
+      // currentNode.isOnOpenList = false
+      currentNode.isOnClosedList = true
+      // console.log('current node', currentNode)
+      if (
+        currentNode.positionX === endNode.positionX &&
+        currentNode.positionY === endNode.positionY
+      ) {
         console.log('reached the destination')
         return backtrackRoute(startNode, endNode)
       }
 
-      this.openList = removeNodeFromList(currentNode, this.openList)
-      currentNode.isOnOpenList = false
-      currentNode.isOnClosedList = true
       this.findSuccessors(currentNode)
     }
     return backtrackRoute(startNode, endNode)
@@ -81,18 +85,21 @@ export class JPS {
    * @param node Node
    */
   private findSuccessors(node: Node): void {
-    const neighbors = this.findPrunedNeighbors(node, this.grid)
+    const neighbors = this.findPrunedNeighbors(node)
+    // console.log('node', node, '\nneighbors', neighbors)
     for (let neighbor of neighbors) {
       if (!neighbor || neighbor.isOnClosedList) continue
+
       let jumpPoint: JumpPoint = this.findJumpPoint(
         { positionX: neighbor.positionX, positionY: neighbor.positionY },
         { positionX: node.positionX, positionY: node.positionY }
       )
+      // console.log('node', node)
+
+      // console.log('jump point', jumpPoint)
       if (jumpPoint) {
-        const jumpNode = this.grid.nodeAt({
-          positionX: jumpPoint.positionX,
-          positionY: jumpPoint.positionY,
-        })
+        const jumpNode = this.grid.nodeAt(jumpPoint)
+
         if (jumpNode.isOnClosedList) continue
         const distance = calculateHeuristic(
           { positionX: jumpNode.positionX, positionY: jumpNode.positionY },
@@ -102,8 +109,10 @@ export class JPS {
         const cumulativeGScore = node.gValue + distance
         if (!jumpNode.isOnOpenList || cumulativeGScore < jumpNode.gValue) {
           jumpNode.gValue = cumulativeGScore
+          jumpNode.hValue =
+            jumpNode.hValue ||
+            calculateHeuristic(jumpPoint, this.destination, this.heuristic)
           jumpNode.parentNode = node
-
           if (!jumpNode.isOnOpenList) {
             this.openList.push(jumpNode)
             jumpNode.isOnOpenList = true
@@ -121,14 +130,51 @@ export class JPS {
   private findJumpPoint(n: IPoint, p: IPoint): JumpPoint {
     const dx = n.positionX - p.positionX
     const dy = n.positionY - p.positionY
-    if (!this.grid.nodeAt(n)) return null
-    if (!this.grid.nodeAt(n).isWalkable) return null
-    if (n === this.destination) return n
+
+    if (!this.grid.walkableAt(n)) {
+      // console.log('a0')
+      return null
+    }
+    if (
+      n.positionX === this.destination.positionX &&
+      n.positionY === this.destination.positionY
+    ) {
+      return n
+    }
+
+    // checking forced neighbors
     // check diagonally
     if (dx !== 0 && dy !== 0) {
       if (
-        this.findJumpPoint({ ...n, positionX: n.positionX + dx }, p) ||
-        this.findJumpPoint({ ...n, positionY: n.positionY + dy }, p)
+        (this.grid.walkableAt({
+          positionX: n.positionX - dx,
+          positionY: n.positionY + dy,
+        }) &&
+          !this.grid.walkableAt({
+            positionX: n.positionX - dx,
+            positionY: n.positionY,
+          })) ||
+        (this.grid.walkableAt({
+          positionX: n.positionX + dx,
+          positionY: n.positionY - dy,
+        }) &&
+          !this.grid.walkableAt({
+            positionX: n.positionX,
+            positionY: n.positionY - dy,
+          }))
+      ) {
+        return n
+      }
+
+      if (
+        this.findJumpPoint(
+          { positionX: n.positionX + dx, positionY: n.positionY },
+          n
+        ) ||
+        this.findJumpPoint(
+          { positionX: n.positionX, positionY: n.positionY + dy },
+          n
+        )
       ) {
         return n
       }
@@ -137,231 +183,225 @@ export class JPS {
     else {
       if (dx !== 0) {
         if (
-          (this.grid.nodeAt({ ...n, positionY: n.positionY - 1 }) &&
-            this.grid.nodeAt({ ...n, positionY: n.positionY - 1 }).isWalkable &&
-            this.grid.nodeAt({
-              positionX: n.positionX - dx,
-              positionY: n.positionY - 1,
-            }) &&
-            !this.grid.nodeAt({
-              positionX: n.positionX - dx,
-              positionY: n.positionY - 1,
-            }).isWalkable) ||
-          (this.grid.nodeAt({ ...n, positionY: n.positionY + 1 }) &&
-            this.grid.nodeAt({ ...n, positionY: n.positionY + 1 }).isWalkable &&
-            this.grid.nodeAt({
-              positionX: n.positionX - dx,
+          (this.grid.walkableAt({
+            positionX: n.positionX + dx,
+            positionY: n.positionY + 1,
+          }) &&
+            !this.grid.walkableAt({
+              positionX: n.positionX,
               positionY: n.positionY + 1,
-            }) &&
-            !this.grid.nodeAt({
-              positionX: n.positionX - dx,
-              positionY: n.positionY + 1,
-            }).isWalkable)
+            })) ||
+          (this.grid.walkableAt({
+            positionX: n.positionX + dx,
+            positionY: n.positionY - 1,
+          }) &&
+            !this.grid.walkableAt({
+              positionX: n.positionX,
+              positionY: n.positionY - 1,
+            }))
         ) {
           return n
         }
-      } else if (dy !== 0) {
+      } else {
         if (
-          (this.grid.nodeAt({ ...n, positionX: n.positionX - 1 }) &&
-            this.grid.nodeAt({ ...n, positionX: n.positionX - 1 }).isWalkable &&
-            this.grid.nodeAt({
-              positionX: n.positionX - 1,
-              positionY: n.positionY - dy,
-            }) &&
-            !this.grid.nodeAt({
-              positionX: n.positionX - 1,
-              positionY: n.positionY - dy,
-            }).isWalkable) ||
-          (this.grid.nodeAt({ ...n, positionX: n.positionY + 1 }) &&
-            this.grid.nodeAt({ ...n, positionX: n.positionY + 1 }).isWalkable &&
-            this.grid.nodeAt({
+          (this.grid.walkableAt({
+            positionX: n.positionX + 1,
+            positionY: n.positionY + dy,
+          }) &&
+            !this.grid.walkableAt({
               positionX: n.positionX + 1,
-              positionY: n.positionY - dy,
-            }) &&
-            !this.grid.nodeAt({
-              positionX: n.positionX + 1,
-              positionY: n.positionY - dy,
-            }).isWalkable)
+              positionY: n.positionY,
+            })) ||
+          (this.grid.walkableAt({
+            positionX: n.positionX - 1,
+            positionY: n.positionY + dy,
+          }) &&
+            !this.grid.walkableAt({
+              positionX: n.positionX - 1,
+              positionY: n.positionY,
+            }))
         ) {
           return n
         }
       }
     }
 
-    if (
-      this.grid.nodeAt({ ...n, positionX: n.positionX + dx }) &&
-      this.grid.nodeAt({ ...n, positionX: n.positionX + dx }).isWalkable &&
-      this.grid.nodeAt({ ...n, positionY: n.positionY + dy }) &&
-      this.grid.nodeAt({ ...n, positionY: n.positionY + dy }).isWalkable
-    ) {
-      return this.findJumpPoint(
-        { positionX: n.positionX + dx, positionY: n.positionY + dy },
-        n
-      )
-    } else {
-      return null
-    }
+    return this.findJumpPoint(
+      { positionX: n.positionX + dx, positionY: n.positionY + dy },
+      n
+    )
   }
 
   /**
    * Finds pruned neighbors for a given Node and Grid
    * @param node Node
-   * @param g Grid
    */
-  private findPrunedNeighbors(node: Node, g: Grid): Node[] {
-    if (!node.parentNode)
-      return g.getNeighbors({
+  private findPrunedNeighbors(node: Node): Node[] {
+    // node doesn't have a parent, return all valid neighbors
+    if (!node.parentNode) {
+      return this.grid.getNeighbors({
         positionX: node.positionX,
         positionY: node.positionY,
       })
-    else {
+    } else {
+      // node has a parent, so prune based on direction
       const neighbors: Node[] = []
       const dx =
         (node.positionX - node.parentNode.positionX) /
-        maxVal(absoluteDiff(node.positionX, node.parentNode.positionX), 1)
+        maxVal(absoluteDiff(node.positionX, node.parentNode.positionX), 1) // normalized x direction
       const dy =
         (node.positionY - node.parentNode.positionY) /
-        maxVal(absoluteDiff(node.positionY, node.parentNode.positionY), 1)
-
+        maxVal(absoluteDiff(node.positionY, node.parentNode.positionY), 1) // normalized y direction
       // diagonal
       if (dx !== 0 && dy !== 0) {
-        const p1: IPoint = {
-          positionX: node.positionX,
-          positionY: node.positionY + dy,
-        }
-        if (g.nodeAt(p1) && g.nodeAt(p1).isWalkable)
-          neighbors.push(g.nodeAt(p1))
-        const p2: IPoint = {
-          positionX: node.positionX + dx,
-          positionY: node.positionY,
-        }
-        if (g.nodeAt(p2) && g.nodeAt(p2).isWalkable)
-          neighbors.push(g.nodeAt(p2))
-        const p3: IPoint = {
-          positionX: node.positionX + dx,
-          positionY: node.positionY + dy,
+        if (
+          this.grid.walkableAt({
+            positionX: node.positionX,
+            positionY: node.positionY + dy,
+          })
+        ) {
+          neighbors.push(
+            this.grid.nodeAt({
+              positionX: node.positionX,
+              positionY: node.positionY + dy,
+            })
+          )
         }
         if (
-          g.nodeAt(p1) &&
-          g.nodeAt(p1).isWalkable &&
-          g.nodeAt(p2) &&
-          g.nodeAt(p2).isWalkable
-        )
-          neighbors.push(g.nodeAt(p3))
+          this.grid.walkableAt({
+            positionX: node.positionX + dx,
+            positionY: node.positionY,
+          })
+        ) {
+          neighbors.push(
+            this.grid.nodeAt({
+              positionX: node.positionX + dx,
+              positionY: node.positionY,
+            })
+          )
+        }
+        if (
+          this.grid.walkableAt({
+            positionX: node.positionX + dx,
+            positionY: node.positionY + dy,
+          })
+        ) {
+          neighbors.push(
+            this.grid.nodeAt({
+              positionX: node.positionX + dx,
+              positionY: node.positionY + dy,
+            })
+          )
+        }
+        if (
+          !this.grid.walkableAt({
+            positionX: node.positionX - dx,
+            positionY: node.positionY,
+          })
+        ) {
+          neighbors.push(
+            this.grid.nodeAt({
+              positionX: node.positionX - dx,
+              positionY: node.positionY + dy,
+            })
+          )
+        }
+        if (
+          !this.grid.walkableAt({
+            positionX: node.positionX,
+            positionY: node.positionY - dy,
+          })
+        ) {
+          neighbors.push(
+            this.grid.nodeAt({
+              positionX: node.positionX + dx,
+              positionY: node.positionY - dy,
+            })
+          )
+        }
       }
       // vertical and horizontal
       else {
-        let nextWalkable: boolean
-        if (dx !== 0) {
-          const nextPoint: IPoint = {
-            positionX: node.positionX + dx,
-            positionY: node.positionY,
-          }
-          nextWalkable = g.nodeAt(nextPoint) && g.nodeAt(nextPoint).isWalkable
-          const top =
-            g.nodeAt({
+        if (dx === 0) {
+          if (
+            this.grid.walkableAt({
               positionX: node.positionX,
-              positionY: node.positionY + 1,
-            }) &&
-            g.nodeAt({
-              positionX: node.positionX,
-              positionY: node.positionY + 1,
-            }).isWalkable
-          const bottom =
-            g.nodeAt({
-              positionX: node.positionX,
-              positionY: node.positionY - 1,
-            }) &&
-            g.nodeAt({
-              positionX: node.positionX,
-              positionY: node.positionY - 1,
-            }).isWalkable
-          if (nextWalkable) {
-            neighbors.push(g.nodeAt(nextPoint))
-            if (top)
-              neighbors.push(
-                g.nodeAt({
-                  positionX: node.positionX + dx,
-                  positionY: node.positionY + 1,
-                })
-              )
-            if (bottom)
-              neighbors.push(
-                g.nodeAt({
-                  positionX: node.positionX + dx,
-                  positionY: node.positionY - 1,
-                })
-              )
-          }
-          if (top)
+              positionY: node.positionY + dy,
+            })
+          ) {
             neighbors.push(
-              g.nodeAt({
+              this.grid.nodeAt({
                 positionX: node.positionX,
+                positionY: node.positionY + dy,
+              })
+            )
+          }
+          if (
+            !this.grid.walkableAt({
+              positionX: node.positionX + 1,
+              positionY: node.positionY,
+            })
+          ) {
+            neighbors.push(
+              this.grid.nodeAt({
+                positionX: node.positionX + 1,
+                positionY: node.positionY + dy,
+              })
+            )
+          }
+          if (
+            !this.grid.walkableAt({
+              positionX: node.positionX - 1,
+              positionY: node.positionY,
+            })
+          ) {
+            neighbors.push(
+              this.grid.nodeAt({
+                positionX: node.positionX - 1,
+                positionY: node.positionY + dy,
+              })
+            )
+          }
+        } else {
+          if (
+            this.grid.walkableAt({
+              positionX: node.positionX + dx,
+              positionY: node.positionY,
+            })
+          ) {
+            neighbors.push(
+              this.grid.nodeAt({
+                positionX: node.positionX + dx,
+                positionY: node.positionY,
+              })
+            )
+          }
+          if (
+            !this.grid.walkableAt({
+              positionX: node.positionX,
+              positionY: node.positionY + 1,
+            })
+          ) {
+            neighbors.push(
+              this.grid.nodeAt({
+                positionX: node.positionX + dx,
                 positionY: node.positionY + 1,
               })
             )
-          if (bottom)
+          }
+          if (
+            !this.grid.walkableAt({
+              positionX: node.positionX,
+              positionY: node.positionY - 1,
+            })
+          ) {
             neighbors.push(
-              g.nodeAt({
-                positionX: node.positionX,
+              this.grid.nodeAt({
+                positionX: node.positionX + dx,
                 positionY: node.positionY - 1,
               })
             )
-        } else if (dy !== 0) {
-          const nextPoint: IPoint = {
-            positionX: node.positionX,
-            positionY: node.positionY + dy,
           }
-          nextWalkable = g.nodeAt(nextPoint) && g.nodeAt(nextPoint).isWalkable
-          const top =
-            g.nodeAt({
-              positionX: node.positionX + 1,
-              positionY: node.positionY,
-            }) &&
-            g.nodeAt({
-              positionX: node.positionX + 1,
-              positionY: node.positionY,
-            }).isWalkable
-          const bottom =
-            g.nodeAt({
-              positionX: node.positionX - 1,
-              positionY: node.positionY,
-            }) &&
-            g.nodeAt({
-              positionX: node.positionX - 1,
-              positionY: node.positionY,
-            }).isWalkable
-          if (nextWalkable) {
-            neighbors.push(g.nodeAt(nextPoint))
-            if (top)
-              neighbors.push(
-                g.nodeAt({
-                  positionX: node.positionX + 1,
-                  positionY: node.positionY + dy,
-                })
-              )
-            if (bottom)
-              neighbors.push(
-                g.nodeAt({
-                  positionX: node.positionX - 1,
-                  positionY: node.positionY + dy,
-                })
-              )
-          }
-          if (top)
-            neighbors.push(
-              g.nodeAt({
-                positionX: node.positionX + 1,
-                positionY: node.positionY,
-              })
-            )
-          if (bottom)
-            neighbors.push(
-              g.nodeAt({
-                positionX: node.positionX - 1,
-                positionY: node.positionY,
-              })
-            )
         }
       }
       return neighbors
