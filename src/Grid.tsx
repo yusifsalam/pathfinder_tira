@@ -14,10 +14,10 @@ import {
   ListItem,
   UnorderedList,
 } from '@chakra-ui/core'
-import { AStar } from './astar/astar'
-import { Dijkstra } from './astar/dijkstra'
+import { AStar } from './algorithms/astar'
+import { Dijkstra } from './algorithms/dijkstra'
 import { MapObject } from './types'
-import { JPS } from './astar/jps'
+import { JPS } from './algorithms/jps'
 
 interface GridProps {
   mapName: String
