@@ -43,24 +43,6 @@ export class JPS {
     this.openList.push(startNode)
     startNode.isOnOpenList = true
 
-    // // Calculate heuristic values and preemptively add unwalkable Nodes to the closed list
-    // for (let j = 0; j < this.grid.height; j++) {
-    //   for (let i = 0; i < this.grid.width; i++) {
-    //     let currentNode = this.grid.nodeAt({ positionX: i, positionY: j })
-    //     if (currentNode.isWalkable) {
-    //       const hValue = calculateHeuristic(
-    //         {
-    //           positionX: currentNode.positionX,
-    //           positionY: currentNode.positionY,
-    //         },
-    //         { positionX: endNode.positionX, positionY: endNode.positionY },
-    //         this.heuristic
-    //       )
-    //       currentNode.hValue = hValue
-    //     }
-    //   }
-    // }
-
     while (this.openList.length !== 0) {
       const currentNode = lowestFScore(this.openList)
       this.openList = removeNodeFromList(currentNode, this.openList)
