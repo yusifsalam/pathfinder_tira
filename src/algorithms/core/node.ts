@@ -1,4 +1,4 @@
-import { INodeConstructor } from '../types'
+import { INodeConstructor } from '../../types'
 
 export class Node {
   id: number

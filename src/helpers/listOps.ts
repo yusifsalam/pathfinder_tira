@@ -1,4 +1,4 @@
-import { Node } from '../algorithms/node'
+import { Node } from '../algorithms/core/node'
 
 /**
  * Returns the Node with the lowest f-score

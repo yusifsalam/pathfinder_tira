@@ -1,5 +1,5 @@
-import { absoluteDiff, minVal } from '../helpers/math'
-import { IPoint, Heuristic } from '../types'
+import { absoluteDiff, minVal } from '../../helpers/math'
+import { IPoint, Heuristic } from '../../types'
 
 /**
  * Manhattan distance heuristic function

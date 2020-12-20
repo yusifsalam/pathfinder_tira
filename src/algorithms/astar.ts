@@ -1,7 +1,7 @@
-import { Node } from './node'
-import { Grid } from './grid'
+import { Node } from './core/node'
+import { Grid } from './core/grid'
 import { lowestFScore, removeNodeFromList } from '../helpers/listOps'
-import { calculateHeuristic } from './heuristic'
+import { calculateHeuristic } from './core/heuristic'
 import { Heuristic, IPoint } from '../types'
 import { backtrackRoute } from '../helpers/backtrackRoute'
 

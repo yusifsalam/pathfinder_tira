@@ -1,4 +1,4 @@
-import { Node } from '../algorithms/node'
+import { Node } from '../algorithms/core/node'
 
 export function backtrackRoute(startNode: Node, endNode: Node): Node[] {
   let route = [endNode]

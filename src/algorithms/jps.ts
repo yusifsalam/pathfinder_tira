@@ -2,9 +2,9 @@ import { backtrackRoute } from '../helpers/backtrackRoute'
 import { lowestFScore, removeNodeFromList } from '../helpers/listOps'
 import { Heuristic, IPoint, JumpPoint } from '../types'
 import { AStarParams } from './astar'
-import { Grid } from './grid'
-import { calculateHeuristic } from './heuristic'
-import { Node } from './node'
+import { Grid } from './core/grid'
+import { calculateHeuristic } from './core/heuristic'
+import { Node } from './core/node'
 import { maxVal, absoluteDiff } from '../helpers/math'
 
 export class JPS {
