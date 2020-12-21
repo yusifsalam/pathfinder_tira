@@ -2,7 +2,7 @@ import { Node } from './core/node'
 import { Grid } from './core/grid'
 import { lowestFScore, removeNodeFromList } from '../helpers/listOps'
 import { calculateHeuristic } from './core/heuristic'
-import { Heuristic, IPoint } from '../types'
+import { Heuristic, IPoint, Result } from '../types'
 import { backtrackRoute } from '../helpers/backtrackRoute'
 
 export interface AStarParams {
@@ -26,16 +26,20 @@ export class AStar {
     this.heuristic = params.heuristic || Heuristic.Octile
   }
 
-  public findPath(start: IPoint, end: IPoint): Node[] {
+  public findPath(start: IPoint, end: IPoint): Result {
     const startNode = this.grid.nodeAt(start)
     const endNode = this.grid.nodeAt(end)
 
     if (!startNode.isWalkable) {
-      console.log('start node not walkable')
-      return []
+      return {
+        error: 'start node not walkable',
+        path: [],
+      }
     } else if (!endNode.isWalkable) {
-      console.log('end node not walkable')
-      return []
+      return {
+        error: 'end node not walkable',
+        path: [],
+      }
     }
     this.openList.push(startNode)
     startNode.isOnOpenList = true
@@ -62,8 +66,8 @@ export class AStar {
       const currentNode = lowestFScore(this.openList)
 
       if (currentNode === endNode) {
-        console.log('current node reached the end')
-        return backtrackRoute(startNode, currentNode)
+        const route = backtrackRoute(startNode, currentNode)
+        return { path: route }
       }
 
       this.openList = removeNodeFromList(currentNode, this.openList)
@@ -100,7 +104,6 @@ export class AStar {
         }
       }
     }
-    console.log('no route found')
-    return []
+    return { error: 'no route found', path: [] }
   }
 }

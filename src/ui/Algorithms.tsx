@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/core'
 import { AStar } from '../algorithms/astar'
 import { Dijkstra } from '../algorithms/dijkstra'
-import { MapObject } from '../types'
+import { MapObject, Result } from '../types'
 import { JPS } from '../algorithms/jps'
 
 interface AlgorithmsProps {
@@ -40,6 +40,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
   const [startPosition, setStartPosition] = useState<GridPoint>({ x: 0, y: 0 })
   const [endPosition, setEndPosition] = useState<GridPoint>({ x: 0, y: 0 })
   const [errors, setErrors] = useState<String[]>([])
+  const [output, setOutput] = useState<String>('')
 
   useEffect(() => {
     const getMapObject = async () => {
@@ -62,14 +63,15 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
       width: map.width,
     })
     const aStart = Date.now()
-    const res = aStar.findPath(
+    const res: Result = aStar.findPath(
       { positionX: startPosition.x, positionY: startPosition.y },
       { positionX: endPosition.x, positionY: endPosition.y }
     )
     const aEnd = Date.now()
-    console.log('aStar', aStar)
-    console.log('path', res)
-    console.log(`Astar took ${aEnd - aStart} milleseconds`)
+    console.log('A*', aStar)
+    res.error
+      ? setErrors([...errors, res.error])
+      : setOutput(`A* took ${aEnd - aStart} milleseconds`)
   }
 
   const runJPS = () => {
@@ -79,14 +81,15 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
       width: map.width,
     })
     const jpsStart = Date.now()
-    const res = jps.findPath(
+    const res: Result = jps.findPath(
       { positionX: startPosition.x, positionY: startPosition.y },
       { positionX: endPosition.x, positionY: endPosition.y }
     )
     const jpsEnd = Date.now()
-    console.log('jps', jps)
-    console.log('path', res)
-    console.log(`JPS took ${jpsEnd - jpsStart} milliseconds`)
+    console.log('JPS', jps)
+    res.error
+      ? setErrors([...errors, res.error])
+      : setOutput(`JPS took ${jpsEnd - jpsStart} milliseconds`)
   }
 
   const runDijkstra = () => {
@@ -96,15 +99,16 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
       width: map.width,
     })
     const dijStart = Date.now()
-    const resD = dij.findPath(
+    const res: Result = dij.findPath(
       { positionX: startPosition.x, positionY: startPosition.y },
       { positionX: endPosition.x, positionY: endPosition.y }
     )
     const dijEnd = Date.now()
 
-    console.log('dij', dij)
-    console.log('path Dij', resD)
-    console.log(`Dijkstra took ${dijEnd - dijStart} milliseconds`)
+    console.log('dijktra', dij)
+    res.error
+      ? setErrors([...errors, res.error])
+      : setOutput(`Dijkstra took ${dijEnd - dijStart} milliseconds`)
   }
 
   return (
@@ -114,7 +118,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
           <Flex>
             <UnorderedList>
               {errors.map((err) => (
-                <div>
+                <div key={err.toString()}>
                   <ListItem color='tomato'>{err}</ListItem>
                 </div>
               ))}
@@ -243,6 +247,9 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
           Map properties:
           <p>Height {map?.height}</p>
           <p>Width {map?.width}</p>
+          <Heading as='h6' size='m'>
+            {output}
+          </Heading>
           <Heading as='h3' size='lg'>
             Maze preview
           </Heading>

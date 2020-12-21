@@ -1,6 +1,6 @@
 import { backtrackRoute } from '../helpers/backtrackRoute'
 import { lowestFScore, removeNodeFromList } from '../helpers/listOps'
-import { Heuristic, IPoint, JumpPoint } from '../types'
+import { Heuristic, IPoint, JumpPoint, Result } from '../types'
 import { AStarParams } from './astar'
 import { Grid } from './core/grid'
 import { calculateHeuristic } from './core/heuristic'
@@ -27,17 +27,21 @@ export class JPS {
    * @param start Start Node
    * @param end End Node
    */
-  public findPath(start: IPoint, end: IPoint): Node[] {
+  public findPath(start: IPoint, end: IPoint): Result {
     const startNode = this.grid.nodeAt(start)
     const endNode = this.grid.nodeAt(end)
     this.destination = end
 
     if (!startNode.isWalkable) {
-      console.log('start node not walkable')
-      return []
+      return {
+        error: 'start node not walkable',
+        path: [],
+      }
     } else if (!endNode.isWalkable) {
-      console.log('end node not walkable')
-      return []
+      return {
+        error: 'end node not walkable',
+        path: [],
+      }
     }
     startNode.gValue = 0
     this.openList.push(startNode)
@@ -53,13 +57,12 @@ export class JPS {
         currentNode.positionX === endNode.positionX &&
         currentNode.positionY === endNode.positionY
       ) {
-        console.log('reached the destination')
-        return backtrackRoute(startNode, endNode)
+        return { path: backtrackRoute(startNode, currentNode) }
       }
 
       this.findSuccessors(currentNode)
     }
-    return backtrackRoute(startNode, endNode)
+    return { error: 'no route found', path: [] }
   }
 
   /**

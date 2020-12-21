@@ -1,3 +1,5 @@
+import { Node } from './algorithms/core/node'
+
 export interface MapObject {
   type: string
   height: number
@@ -27,3 +29,8 @@ export enum Heuristic {
 }
 
 export type JumpPoint = IPoint | null
+
+export interface Result {
+  error?: string
+  path: Node[]
+}
