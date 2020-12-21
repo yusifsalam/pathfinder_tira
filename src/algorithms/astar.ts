@@ -66,8 +66,7 @@ export class AStar {
       const currentNode = lowestFScore(this.openList)
 
       if (currentNode === endNode) {
-        const route = backtrackRoute(startNode, currentNode)
-        return { path: route }
+        return { path: backtrackRoute(startNode, currentNode) }
       }
 
       this.openList = removeNodeFromList(currentNode, this.openList)
