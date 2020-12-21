@@ -20,7 +20,7 @@ If time allows, upload and use of custom user-defined maps will be implemented. 
 
 ## Technology stack
 
-The program is a simple web app (most likely React), written in TypeScript. Chakra UI will be used for rapidly building the UI of the application, and Echarts library will be used for the visualizations. While the emphasis of the project is on the technical implementation of the data structures and algorithms, it is planned to be implemented in a sustainable way (respecting coding styles and good practices) and look visually appealing.
+The program is a simple React web app, written in TypeScript. Chakra UI was be used for rapidly building the UI of the application. While the emphasis of the project is on the technical implementation of the data structures and algorithms, it is planned to be implemented in a sustainable way (respecting coding styles and good practices) and look visually appealing.
 
 ## Sources
 
