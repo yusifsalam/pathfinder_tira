@@ -1,8 +1,12 @@
 import { Node } from '../algorithms/core/node'
 
+/**
+ * Backtracks and returns the route from the destination to the start
+ * @param startNode Starting node
+ * @param endNode Destination node
+ */
 export function backtrackRoute(startNode: Node, endNode: Node): Node[] {
   let route = [endNode]
-  console.log('endNode', endNode)
   let currentNode: Node = endNode
   if (!currentNode.parentNode) {
     return []
@@ -12,6 +16,5 @@ export function backtrackRoute(startNode: Node, endNode: Node): Node[] {
     currentNode = currentNode.parentNode
   }
   route.unshift(startNode)
-  console.log('route', route)
   return route
 }

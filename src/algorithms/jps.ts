@@ -33,7 +33,7 @@ export class JPS {
     this.destination = end
 
     if (!startNode.isWalkable) {
-      console.log('start or end nodes not walkable')
+      console.log('start node not walkable')
       return []
     } else if (!endNode.isWalkable) {
       console.log('end node not walkable')
@@ -68,7 +68,6 @@ export class JPS {
    */
   private findSuccessors(node: Node): void {
     const neighbors = this.findPrunedNeighbors(node)
-    // console.log('node', node, '\nneighbors', neighbors)
     for (let neighbor of neighbors) {
       if (!neighbor || neighbor.isOnClosedList) continue
 
@@ -76,9 +75,7 @@ export class JPS {
         { positionX: neighbor.positionX, positionY: neighbor.positionY },
         { positionX: node.positionX, positionY: node.positionY }
       )
-      // console.log('node', node)
 
-      // console.log('jump point', jumpPoint)
       if (jumpPoint) {
         const jumpNode = this.grid.nodeAt(jumpPoint)
 
@@ -114,7 +111,6 @@ export class JPS {
     const dy = n.positionY - p.positionY
 
     if (!this.grid.walkableAt(n)) {
-      // console.log('a0')
       return null
     }
     if (
@@ -215,7 +211,7 @@ export class JPS {
   }
 
   /**
-   * Finds pruned neighbors for a given Node and Grid
+   * Finds pruned neighbors for a given Node
    * @param node Node
    */
   private findPrunedNeighbors(node: Node): Node[] {

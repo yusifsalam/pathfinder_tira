@@ -31,10 +31,10 @@ export class AStar {
     const endNode = this.grid.nodeAt(end)
 
     if (!startNode.isWalkable) {
-      console.log('start or end nodes not walkable')
+      console.log('start node not walkable')
       return []
     } else if (!endNode.isWalkable) {
-      console.log('end up not walkable')
+      console.log('end node not walkable')
       return []
     }
     this.openList.push(startNode)

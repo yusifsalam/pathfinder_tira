@@ -56,10 +56,18 @@ export class Grid {
     return this.grid[position.positionY][position.positionX]
   }
 
+  /**
+   * Checks if a node is walkable
+   * @param p Position of the node to check
+   */
   public walkableAt(p: IPoint) {
     return this.isInsideGrid(p) && this.nodeAt(p).isWalkable
   }
 
+  /**
+   * Checks whether a node is within the grid boundaries
+   * @param position Position of the node to check
+   */
   public isInsideGrid(position: IPoint): boolean {
     return (
       position.positionX >= 0 &&
