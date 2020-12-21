@@ -19,7 +19,7 @@ import { Dijkstra } from '../algorithms/dijkstra'
 import { MapObject } from '../types'
 import { JPS } from '../algorithms/jps'
 
-interface GridProps {
+interface AlgorithmsProps {
   mapName: String
 }
 
@@ -34,7 +34,7 @@ enum Algorithm {
   JPS = 'jps',
 }
 
-const Grid: React.FC<GridProps> = ({ mapName }) => {
+const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
   const [map, setMap] = useState<null | MapObject>(null)
   const [algorithm, setAlgorithm] = useState<Algorithm>(Algorithm.AStar)
   const [startPosition, setStartPosition] = useState<GridPoint>({ x: 0, y: 0 })
@@ -257,4 +257,4 @@ const Grid: React.FC<GridProps> = ({ mapName }) => {
   )
 }
 
-export default Grid
+export default Algorithms

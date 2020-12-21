@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Grid from './Algorithms'
+import Algorithms from './Algorithms'
 import { Flex, Select, Heading } from '@chakra-ui/core'
 import { listMaps } from '../helpers/listMaps'
 import { MapFile } from '../types'
@@ -36,7 +36,7 @@ function App() {
           </option>
         ))}
       </Select>
-      <Grid mapName={selectedMap} />
+      <Algorithms mapName={selectedMap} />
     </Flex>
   )
 }
