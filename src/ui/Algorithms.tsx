@@ -18,6 +18,7 @@ import { AStar } from '../algorithms/astar'
 import { Dijkstra } from '../algorithms/dijkstra'
 import { MapObject, Result } from '../types'
 import { JPS } from '../algorithms/jps'
+import Chart from './Chart'
 
 interface AlgorithmsProps {
   mapName: String
@@ -41,6 +42,8 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
   const [endPosition, setEndPosition] = useState<GridPoint>({ x: 0, y: 0 })
   const [errors, setErrors] = useState<String[]>([])
   const [output, setOutput] = useState<String>('')
+  const [showPreview, setShowPreview] = useState(true)
+  const [showRender, setShowRender] = useState(false)
 
   useEffect(() => {
     const getMapObject = async () => {
@@ -69,6 +72,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
     )
     const aEnd = Date.now()
     console.log('A*', aStar)
+    console.log('reitti', res)
     res.error
       ? setErrors([...errors, res.error])
       : setOutput(`A* took ${aEnd - aStart} milleseconds`)
@@ -87,6 +91,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
     )
     const jpsEnd = Date.now()
     console.log('JPS', jps)
+    console.log('reitti', res)
     res.error
       ? setErrors([...errors, res.error])
       : setOutput(`JPS took ${jpsEnd - jpsStart} milliseconds`)
@@ -106,6 +111,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
     const dijEnd = Date.now()
 
     console.log('dijktra', dij)
+    console.log('reitti', res)
     res.error
       ? setErrors([...errors, res.error])
       : setOutput(`Dijkstra took ${dijEnd - dijStart} milliseconds`)
@@ -247,15 +253,21 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
           Map properties:
           <p>Height {map?.height}</p>
           <p>Width {map?.width}</p>
+          <Flex>
+            <Button onClick={() => setShowPreview(!showPreview)}>Show preview</Button>
+            <Button onClick={() => setShowRender(!showRender)}>Show render (SLOW)</Button>
+          </Flex>
           <Heading as='h6' size='m'>
             {output}
           </Heading>
           <Heading as='h3' size='lg'>
             Maze preview
           </Heading>
+          { showPreview ? 
           <Flex flexDir='row'>
             <Image src={`maps/images/${mapName.split('.')[0]}.png`} />
-          </Flex>
+          </Flex> : <></> }
+          {showRender ? <Chart data={map.grid}/> : <> </> }
         </Flex>
       ) : (
         <div />
