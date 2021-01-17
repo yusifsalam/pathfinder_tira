@@ -61,8 +61,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
   })
   const [showPreview, setShowPreview] = useState(true)
   const [showRender, setShowRender] = useState(false)
-  const filteredMap = map?.grid?.filter((val) => val[2] !== 0)
-
+  const [filteredMap, setFilteredMap] = useState<number[][]>(null)
   useEffect(() => {
     const getMapObject = async () => {
       const mapObject = await parseMap(mapName)
@@ -70,6 +69,10 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
     }
     getMapObject()
   }, [mapName, setMap])
+
+  useEffect(() => {
+    setFilteredMap(map?.grid?.filter((val) => val[2] !== 0))
+  }, [map])
 
   const startPathSearch = (alg: Algorithm) => {
     if (alg === Algorithm.AStar) runAStar()
@@ -103,6 +106,9 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
         ],
       }
       setOutput(newOutput)
+      const gridCopy = [...map.grid]
+      res.path.forEach((n) => (gridCopy[n.id][2] = 2))
+      setFilteredMap(gridCopy.filter((val) => val[2] !== 0))
     }
   }
 
@@ -132,6 +138,9 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
         ],
       }
       setOutput(newOutput)
+      const gridCopy = [...map.grid]
+      res.path.forEach((n) => (gridCopy[n.id][2] = 2))
+      setFilteredMap(gridCopy.filter((val) => val[2] !== 0))
     }
   }
 
@@ -162,6 +171,9 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
         ],
       }
       setOutput(newOutput)
+      const gridCopy = [...map.grid]
+      res.path.forEach((n) => (gridCopy[n.id][2] = 2))
+      setFilteredMap(gridCopy.filter((val) => val[2] !== 0))
     }
   }
 
@@ -327,7 +339,14 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
             ) : (
               <></>
             )}
-            {showRender ? <Chart data={filteredMap} /> : <> </>}
+            {showRender ? (
+              <Chart
+                data={filteredMap ? filteredMap : null}
+                size={map?.height}
+              />
+            ) : (
+              <> </>
+            )}
           </Flex>
           <Flex>
             <Table>
