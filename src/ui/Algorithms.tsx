@@ -44,6 +44,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
   const [output, setOutput] = useState<String>('')
   const [showPreview, setShowPreview] = useState(true)
   const [showRender, setShowRender] = useState(false)
+  const filteredMap = map?.grid?.filter(val => val[2] !== 0)
 
   useEffect(() => {
     const getMapObject = async () => {
@@ -267,7 +268,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
           <Flex flexDir='row'>
             <Image src={`maps/images/${mapName.split('.')[0]}.png`} />
           </Flex> : <></> }
-          {showRender ? <Chart data={map.grid}/> : <> </> }
+          {showRender ? <Chart data={filteredMap}/> : <> </> }
         </Flex>
       ) : (
         <div />
