@@ -13,6 +13,13 @@ import {
   Select,
   ListItem,
   UnorderedList,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
 } from '@chakra-ui/react'
 import { AStar } from '../algorithms/astar'
 import { Dijkstra } from '../algorithms/dijkstra'
@@ -35,13 +42,23 @@ enum Algorithm {
   JPS = 'jps',
 }
 
+interface Output {
+  algorithm: String[]
+  duration: number[]
+  pathLength: number[]
+}
+
 const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
   const [map, setMap] = useState<null | MapObject>(null)
   const [algorithm, setAlgorithm] = useState<Algorithm>(Algorithm.AStar)
   const [startPosition, setStartPosition] = useState<GridPoint>({ x: 0, y: 0 })
   const [endPosition, setEndPosition] = useState<GridPoint>({ x: 0, y: 0 })
   const [errors, setErrors] = useState<String[]>([])
-  const [output, setOutput] = useState<String>('')
+  const [output, setOutput] = useState<Output>({
+    algorithm: [],
+    duration: [],
+    pathLength: [],
+  })
   const [showPreview, setShowPreview] = useState(true)
   const [showRender, setShowRender] = useState(false)
   const filteredMap = map?.grid?.filter((val) => val[2] !== 0)
@@ -74,9 +91,19 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
     const aEnd = Date.now()
     console.log('A*', aStar)
     console.log('reitti', res)
-    res.error
-      ? setErrors([...errors, res.error])
-      : setOutput(output.concat(`A* took ${aEnd - aStart} milleseconds `))
+    if (res.error) {
+      setErrors([...errors, res.error])
+    } else {
+      const newOutput: Output = {
+        algorithm: [...output.algorithm, 'A*'],
+        duration: [...output.duration, aEnd - aStart],
+        pathLength: [
+          ...output.pathLength,
+          res.path[res.path.length - 1].fValue,
+        ],
+      }
+      setOutput(newOutput)
+    }
   }
 
   const runJPS = () => {
@@ -93,9 +120,19 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
     const jpsEnd = Date.now()
     console.log('JPS', jps)
     console.log('reitti', res)
-    res.error
-      ? setErrors([...errors, res.error])
-      : setOutput(output.concat(`JPS took ${jpsEnd - jpsStart} milliseconds `))
+    if (res.error) {
+      setErrors([...errors, res.error])
+    } else {
+      const newOutput: Output = {
+        algorithm: [...output.algorithm, 'JPS'],
+        duration: [...output.duration, jpsEnd - jpsStart],
+        pathLength: [
+          ...output.pathLength,
+          res.path[res.path.length - 1].fValue,
+        ],
+      }
+      setOutput(newOutput)
+    }
   }
 
   const runDijkstra = () => {
@@ -113,11 +150,19 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
 
     console.log('dijktra', dij)
     console.log('reitti', res)
-    res.error
-      ? setErrors([...errors, res.error])
-      : setOutput(
-          output.concat(`Dijkstra took ${dijEnd - dijStart} milliseconds `)
-        )
+    if (res.error) {
+      setErrors([...errors, res.error])
+    } else {
+      const newOutput: Output = {
+        algorithm: [...output.algorithm, 'Dijkstra'],
+        duration: [...output.duration, dijEnd - dijStart],
+        pathLength: [
+          ...output.pathLength,
+          res.path[res.path.length - 1].fValue,
+        ],
+      }
+      setOutput(newOutput)
+    }
   }
 
   return (
@@ -270,7 +315,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
               </Button>
             </Flex>
             <Heading as='h6' size='m'>
-              {output}
+              Output
             </Heading>
             <Heading as='h3' size='lg'>
               Maze preview
@@ -285,7 +330,25 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
             {showRender ? <Chart data={filteredMap} /> : <> </>}
           </Flex>
           <Flex>
-            <Heading>Output</Heading>
+            <Table>
+              <TableCaption placement='top'>Output table</TableCaption>
+              <Thead>
+                <Tr>
+                  <Th>Algorithm</Th>
+                  <Th>Duration (ms)</Th>
+                  <Th>Path length</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {output?.algorithm?.map((_, i) => (
+                  <Tr key={i}>
+                    <Td>{output.algorithm[i]}</Td>
+                    <Td>{output.duration[i]}</Td>
+                    <Td>{output.pathLength[i].toFixed(2)}</Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
           </Flex>
         </Flex>
       ) : (
