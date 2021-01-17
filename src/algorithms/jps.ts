@@ -1,4 +1,4 @@
-import { backtrackRoute } from '../helpers/backtrackRoute'
+import { backtrackRoute, expandRoute } from '../helpers/backtrackRoute'
 import { lowestFScore, removeNodeFromList } from '../helpers/listOps'
 import { Heuristic, IPoint, JumpPoint, Result } from '../types'
 import { AStarParams } from './astar'
@@ -57,7 +57,9 @@ export class JPS {
         currentNode.positionX === endNode.positionX &&
         currentNode.positionY === endNode.positionY
       ) {
-        return { path: backtrackRoute(startNode, currentNode) }
+        const shortRoute = backtrackRoute(startNode, currentNode)
+        const fullRoute = expandRoute(shortRoute, this.grid)
+        return { path: fullRoute }
       }
 
       this.findSuccessors(currentNode)
