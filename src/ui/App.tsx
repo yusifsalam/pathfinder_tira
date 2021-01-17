@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Algorithms from './Algorithms'
-import { Flex, Select, Heading } from '@chakra-ui/core'
+import { Flex, Select, Heading } from '@chakra-ui/react'
 import { listMaps } from '../helpers/listMaps'
 import { MapFile } from '../types'
 

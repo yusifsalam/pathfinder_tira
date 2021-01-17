@@ -13,7 +13,7 @@ import {
   Select,
   ListItem,
   UnorderedList,
-} from '@chakra-ui/core'
+} from '@chakra-ui/react'
 import { AStar } from '../algorithms/astar'
 import { Dijkstra } from '../algorithms/dijkstra'
 import { MapObject, Result } from '../types'
@@ -44,7 +44,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
   const [output, setOutput] = useState<String>('')
   const [showPreview, setShowPreview] = useState(true)
   const [showRender, setShowRender] = useState(false)
-  const filteredMap = map?.grid?.filter(val => val[2] !== 0)
+  const filteredMap = map?.grid?.filter((val) => val[2] !== 0)
 
   useEffect(() => {
     const getMapObject = async () => {
@@ -76,7 +76,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
     console.log('reitti', res)
     res.error
       ? setErrors([...errors, res.error])
-      : setOutput(`A* took ${aEnd - aStart} milleseconds`)
+      : setOutput(output.concat(`A* took ${aEnd - aStart} milleseconds `))
   }
 
   const runJPS = () => {
@@ -95,7 +95,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
     console.log('reitti', res)
     res.error
       ? setErrors([...errors, res.error])
-      : setOutput(`JPS took ${jpsEnd - jpsStart} milliseconds`)
+      : setOutput(output.concat(`JPS took ${jpsEnd - jpsStart} milliseconds `))
   }
 
   const runDijkstra = () => {
@@ -115,160 +115,178 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
     console.log('reitti', res)
     res.error
       ? setErrors([...errors, res.error])
-      : setOutput(`Dijkstra took ${dijEnd - dijStart} milliseconds`)
+      : setOutput(
+          output.concat(`Dijkstra took ${dijEnd - dijStart} milliseconds `)
+        )
   }
 
   return (
     <div>
       {map?.height ? (
-        <Flex flexDir='column' h='100%' flex={1}>
-          <Flex>
-            <UnorderedList>
-              {errors.map((err) => (
-                <div key={err.toString()}>
-                  <ListItem color='tomato'>{err}</ListItem>
-                </div>
-              ))}
-            </UnorderedList>
-          </Flex>
-          <Flex>
-            <NumberInput
-              max={map.width}
-              min={0}
-              maxW={250}
-              keepWithinRange={false}
-              clampValueOnBlur={false}
-              onChange={(value) => {
-                setStartPosition({ ...startPosition, x: parseInt(value) })
-                const val = parseInt(value)
-                const errText = 'Start X invalid'
-                if (val < 0 || val > map.width) {
-                  if (!errors.includes(errText)) setErrors([...errors, errText])
-                } else setErrors(errors.filter((er) => er !== errText))
-              }}
-            >
-              <NumberInputField
-                placeholder='Start X position'
-                value={startPosition.x}
-              />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-            <NumberInput
-              max={map.height}
-              min={0}
-              maxW={250}
-              keepWithinRange={false}
-              clampValueOnBlur={false}
-              onChange={(value) => {
-                setStartPosition({ ...startPosition, y: parseInt(value) })
-                const val = parseInt(value)
-                const errText = 'Start Y invalid'
-                if (val < 0 || val > map.height) {
-                  if (!errors.includes(errText)) setErrors([...errors, errText])
-                } else setErrors(errors.filter((er) => er !== errText))
-              }}
-            >
-              <NumberInputField
-                placeholder='Start node Y position'
-                value={startPosition.y}
-              />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          </Flex>
-          <Flex>
-            <NumberInput
-              max={map.width}
-              min={0}
-              maxW={250}
-              keepWithinRange={false}
-              clampValueOnBlur={false}
-              onChange={(value) => {
-                setEndPosition({ ...endPosition, x: parseInt(value) })
-                const val = parseInt(value)
-                const errText = 'Destination X invalid'
-                if (val < 0 || val > map.width) {
-                  if (!errors.includes(errText)) setErrors([...errors, errText])
-                } else setErrors(errors.filter((er) => er !== errText))
-              }}
-            >
-              <NumberInputField
-                placeholder='Destination X position'
-                value={endPosition.x}
-              />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-            <NumberInput
-              max={map.height}
-              min={0}
-              maxW={250}
-              keepWithinRange={false}
-              clampValueOnBlur={false}
-              onChange={(value) => {
-                setEndPosition({ ...endPosition, y: parseInt(value) })
-                const val = parseInt(value)
-                const errText = 'Destination Y invalid'
-                if (val < 0 || val > map.height) {
-                  if (!errors.includes(errText)) setErrors([...errors, errText])
-                } else setErrors(errors.filter((er) => er !== errText))
-              }}
-            >
-              <NumberInputField
-                placeholder='Destination Y position'
-                value={endPosition.y}
-              />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          </Flex>
-          <Flex>
-            <Select
-              placeholder='Select algorithm'
-              onChange={(e) => setAlgorithm(Algorithm[e.target.value])}
+        <Flex>
+          <Flex flexDir='column' h='100%' flex={1}>
+            <Flex>
+              <UnorderedList>
+                {errors.map((err) => (
+                  <div key={err.toString()}>
+                    <ListItem color='tomato'>{err}</ListItem>
+                  </div>
+                ))}
+              </UnorderedList>
+            </Flex>
+            <Flex>
+              <NumberInput
+                max={map.width}
+                min={0}
+                maxW={250}
+                keepWithinRange={false}
+                clampValueOnBlur={false}
+                onChange={(value) => {
+                  setStartPosition({ ...startPosition, x: parseInt(value) })
+                  const val = parseInt(value)
+                  const errText = 'Start X invalid'
+                  if (val < 0 || val > map.width) {
+                    if (!errors.includes(errText))
+                      setErrors([...errors, errText])
+                  } else setErrors(errors.filter((er) => er !== errText))
+                }}
+              >
+                <NumberInputField
+                  placeholder='Start X position'
+                  value={startPosition.x}
+                />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+              <NumberInput
+                max={map.height}
+                min={0}
+                maxW={250}
+                keepWithinRange={false}
+                clampValueOnBlur={false}
+                onChange={(value) => {
+                  setStartPosition({ ...startPosition, y: parseInt(value) })
+                  const val = parseInt(value)
+                  const errText = 'Start Y invalid'
+                  if (val < 0 || val > map.height) {
+                    if (!errors.includes(errText))
+                      setErrors([...errors, errText])
+                  } else setErrors(errors.filter((er) => er !== errText))
+                }}
+              >
+                <NumberInputField
+                  placeholder='Start node Y position'
+                  value={startPosition.y}
+                />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </Flex>
+            <Flex>
+              <NumberInput
+                max={map.width}
+                min={0}
+                maxW={250}
+                keepWithinRange={false}
+                clampValueOnBlur={false}
+                onChange={(value) => {
+                  setEndPosition({ ...endPosition, x: parseInt(value) })
+                  const val = parseInt(value)
+                  const errText = 'Destination X invalid'
+                  if (val < 0 || val > map.width) {
+                    if (!errors.includes(errText))
+                      setErrors([...errors, errText])
+                  } else setErrors(errors.filter((er) => er !== errText))
+                }}
+              >
+                <NumberInputField
+                  placeholder='Destination X position'
+                  value={endPosition.x}
+                />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+              <NumberInput
+                max={map.height}
+                min={0}
+                maxW={250}
+                keepWithinRange={false}
+                clampValueOnBlur={false}
+                onChange={(value) => {
+                  setEndPosition({ ...endPosition, y: parseInt(value) })
+                  const val = parseInt(value)
+                  const errText = 'Destination Y invalid'
+                  if (val < 0 || val > map.height) {
+                    if (!errors.includes(errText))
+                      setErrors([...errors, errText])
+                  } else setErrors(errors.filter((er) => er !== errText))
+                }}
+              >
+                <NumberInputField
+                  placeholder='Destination Y position'
+                  value={endPosition.y}
+                />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </Flex>
+            <Flex>
+              <Select
+                placeholder='Select algorithm'
+                onChange={(e) => setAlgorithm(Algorithm[e.target.value])}
+                maxW={300}
+              >
+                {Object.keys(Algorithm).map((a) => (
+                  <option value={a} key={a}>
+                    {a}
+                  </option>
+                ))}
+              </Select>
+            </Flex>
+            <Button
               maxW={300}
+              disabled={errors.length !== 0}
+              onClick={() => startPathSearch(algorithm)}
             >
-              {Object.keys(Algorithm).map((a) => (
-                <option value={a} key={a}>
-                  {a}
-                </option>
-              ))}
-            </Select>
+              Start
+            </Button>
+            Map properties:
+            <p>Height {map?.height}</p>
+            <p>Width {map?.width}</p>
+            <Flex>
+              <Button onClick={() => setShowPreview(!showPreview)}>
+                {showPreview ? 'Hide preview' : 'Show preview'}
+              </Button>
+              <Button onClick={() => setShowRender(!showRender)}>
+                {showRender ? 'Hide render' : 'Show render (SLOW)'}
+              </Button>
+            </Flex>
+            <Heading as='h6' size='m'>
+              {output}
+            </Heading>
+            <Heading as='h3' size='lg'>
+              Maze preview
+            </Heading>
+            {showPreview ? (
+              <Flex flexDir='row'>
+                <Image src={`maps/images/${mapName.split('.')[0]}.png`} />
+              </Flex>
+            ) : (
+              <></>
+            )}
+            {showRender ? <Chart data={filteredMap} /> : <> </>}
           </Flex>
-          <Button
-            maxW={300}
-            disabled={errors.length !== 0}
-            onClick={() => startPathSearch(algorithm)}
-          >
-            Start
-          </Button>
-          Map properties:
-          <p>Height {map?.height}</p>
-          <p>Width {map?.width}</p>
           <Flex>
-            <Button onClick={() => setShowPreview(!showPreview)}>Show preview</Button>
-            <Button onClick={() => setShowRender(!showRender)}>Show render (SLOW)</Button>
+            <Heading>Output</Heading>
           </Flex>
-          <Heading as='h6' size='m'>
-            {output}
-          </Heading>
-          <Heading as='h3' size='lg'>
-            Maze preview
-          </Heading>
-          { showPreview ? 
-          <Flex flexDir='row'>
-            <Image src={`maps/images/${mapName.split('.')[0]}.png`} />
-          </Flex> : <></> }
-          {showRender ? <Chart data={filteredMap}/> : <> </> }
         </Flex>
       ) : (
         <div />
