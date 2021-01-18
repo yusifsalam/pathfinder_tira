@@ -326,9 +326,6 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
                 {showRender ? 'Hide render' : 'Show render (SLOW)'}
               </Button>
             </Flex>
-            <Heading as='h6' size='m'>
-              Output
-            </Heading>
             <Heading as='h3' size='lg'>
               Maze preview
             </Heading>
