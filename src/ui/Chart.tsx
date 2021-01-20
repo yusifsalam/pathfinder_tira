@@ -63,7 +63,7 @@ const Chart: React.FC<ChartProps> = ({ data, size }) => {
       <ReactEcharts
         option={getOptions()}
         style={{ height: '1024px', width: '1024px', padding: 0, margin: 0 }}
-        opts={{ renderer: 'canvas' }}
+        opts={{ renderer: data.length < 20000 ? 'svg' : 'canvas' }}
         lazyUpdate={true}
       />
     </div>
