@@ -33,4 +33,5 @@ export type JumpPoint = IPoint | null
 export interface Result {
   error?: string
   path: Node[]
+  jumpPoints?: Node[]
 }

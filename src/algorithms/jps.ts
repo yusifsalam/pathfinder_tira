@@ -50,16 +50,14 @@ export class JPS {
     while (this.openList.length !== 0) {
       const currentNode = lowestFScore(this.openList)
       this.openList = removeNodeFromList(currentNode, this.openList)
-      // currentNode.isOnOpenList = false
       currentNode.isOnClosedList = true
-      // console.log('current node', currentNode)
       if (
         currentNode.positionX === endNode.positionX &&
         currentNode.positionY === endNode.positionY
       ) {
         const shortRoute = backtrackRoute(startNode, currentNode)
         const fullRoute = expandRoute(shortRoute, this.grid)
-        return { path: fullRoute }
+        return { path: fullRoute, jumpPoints: shortRoute }
       }
 
       this.findSuccessors(currentNode)

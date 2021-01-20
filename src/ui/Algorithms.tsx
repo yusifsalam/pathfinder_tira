@@ -125,7 +125,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
     )
     const jpsEnd = Date.now()
     console.log('JPS', jps)
-    console.log('reitti', res)
+    console.log('jump points', res.jumpPoints)
     if (res.error) {
       setErrors([...errors, res.error])
     } else {
@@ -140,6 +140,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
       setOutput(newOutput)
       const gridCopy = [...map.grid]
       res.path.forEach((n) => (gridCopy[n.id][2] = 2))
+      res.jumpPoints.forEach((n) => (gridCopy[n.id][2] = 3))
       setFilteredMap(gridCopy.filter((val) => val[2] !== 0))
     }
   }
@@ -326,11 +327,13 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
                 {showRender ? 'Hide render' : 'Show render (SLOW)'}
               </Button>
             </Flex>
-            <Heading as='h6' size='m'>
-              Output
-            </Heading>
             <Heading as='h3' size='lg'>
-              Maze preview
+              Maze{' '}
+              {showPreview && !showRender
+                ? 'preview'
+                : showPreview && showRender
+                ? 'preview and render'
+                : 'render'}
             </Heading>
             {showPreview ? (
               <Flex flexDir='row'>
