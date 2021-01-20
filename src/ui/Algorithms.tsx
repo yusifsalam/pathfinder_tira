@@ -76,6 +76,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
   }, [map])
 
   const startPathSearch = (alg: Algorithm) => {
+    setErrors(errors.filter((e) => !e.includes('not walkable')))
     if (alg === Algorithm.AStar) runAStar()
     else if (alg === Algorithm.Dijkstra) runDijkstra()
     else if (alg === Algorithm.JPS) runJPS()
@@ -198,7 +199,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
             </Flex>
             <Flex>
               <NumberInput
-                max={map.width}
+                max={map.width - 1}
                 min={0}
                 maxW={250}
                 keepWithinRange={false}
@@ -214,7 +215,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
                 }}
               >
                 <NumberInputField
-                  placeholder='Start X position'
+                  placeholder='Start X'
                   value={startPosition.x}
                 />
                 <NumberInputStepper>
@@ -223,7 +224,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
                 </NumberInputStepper>
               </NumberInput>
               <NumberInput
-                max={map.height}
+                max={map.height - 1}
                 min={0}
                 maxW={250}
                 keepWithinRange={false}
@@ -239,7 +240,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
                 }}
               >
                 <NumberInputField
-                  placeholder='Start node Y position'
+                  placeholder='Start node Y'
                   value={startPosition.y}
                 />
                 <NumberInputStepper>
@@ -250,7 +251,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
             </Flex>
             <Flex>
               <NumberInput
-                max={map.width}
+                max={map.width - 1}
                 min={0}
                 maxW={250}
                 keepWithinRange={false}
@@ -259,14 +260,14 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
                   setEndPosition({ ...endPosition, x: parseInt(value) })
                   const val = parseInt(value)
                   const errText = 'Destination X invalid'
-                  if (val < 0 || val > map.width) {
+                  if (val < 0 || val > map.width - 1) {
                     if (!errors.includes(errText))
                       setErrors([...errors, errText])
                   } else setErrors(errors.filter((er) => er !== errText))
                 }}
               >
                 <NumberInputField
-                  placeholder='Destination X position'
+                  placeholder='Destination X'
                   value={endPosition.x}
                 />
                 <NumberInputStepper>
@@ -275,7 +276,7 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
                 </NumberInputStepper>
               </NumberInput>
               <NumberInput
-                max={map.height}
+                max={map.height - 1}
                 min={0}
                 maxW={250}
                 keepWithinRange={false}
@@ -284,14 +285,14 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
                   setEndPosition({ ...endPosition, y: parseInt(value) })
                   const val = parseInt(value)
                   const errText = 'Destination Y invalid'
-                  if (val < 0 || val > map.height) {
+                  if (val < 0 || val > map.height - 1) {
                     if (!errors.includes(errText))
                       setErrors([...errors, errText])
                   } else setErrors(errors.filter((er) => er !== errText))
                 }}
               >
                 <NumberInputField
-                  placeholder='Destination Y position'
+                  placeholder='Destination Y'
                   value={endPosition.y}
                 />
                 <NumberInputStepper>
@@ -315,7 +316,9 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
             </Flex>
             <Button
               maxW={300}
-              disabled={errors.length !== 0}
+              disabled={
+                errors.filter((e) => !e.includes('not walkable')).length !== 0
+              }
               onClick={() => startPathSearch(algorithm)}
             >
               Start
