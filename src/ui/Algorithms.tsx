@@ -107,7 +107,8 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
         ],
       }
       setOutput(newOutput)
-      const gridCopy = [...map.grid]
+      const mapCopy = JSON.parse(JSON.stringify(map))
+      const gridCopy = mapCopy.grid
       res.path.forEach((n) => (gridCopy[n.id][2] = 2))
       setFilteredMap(gridCopy.filter((val) => val[2] !== 0))
     }
@@ -139,7 +140,8 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
         ],
       }
       setOutput(newOutput)
-      const gridCopy = [...map.grid]
+      const mapCopy = JSON.parse(JSON.stringify(map))
+      const gridCopy = mapCopy.grid
       res.path.forEach((n) => (gridCopy[n.id][2] = 2))
       res.jumpPoints.forEach((n) => (gridCopy[n.id][2] = 3))
       setFilteredMap(gridCopy.filter((val) => val[2] !== 0))
@@ -173,7 +175,8 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
         ],
       }
       setOutput(newOutput)
-      const gridCopy = [...map.grid]
+      const mapCopy = JSON.parse(JSON.stringify(map))
+      const gridCopy = mapCopy.grid
       res.path.forEach((n) => (gridCopy[n.id][2] = 2))
       setFilteredMap(gridCopy.filter((val) => val[2] !== 0))
     }
