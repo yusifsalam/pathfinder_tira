@@ -56,8 +56,11 @@ export class JPS {
         currentNode.positionY === endNode.positionY
       ) {
         const shortRoute = backtrackRoute(startNode, currentNode)
+        let jumps = [...shortRoute]
+        jumps.pop()
+        jumps.shift()
         const fullRoute = expandRoute(shortRoute, this.grid)
-        return { path: fullRoute, jumpPoints: shortRoute }
+        return { path: fullRoute, jumpPoints: jumps }
       }
 
       this.findSuccessors(currentNode)
