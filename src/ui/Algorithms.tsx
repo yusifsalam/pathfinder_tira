@@ -20,6 +20,7 @@ import {
   Th,
   Td,
   TableCaption,
+  Text,
 } from '@chakra-ui/react'
 import { AStar } from '../algorithms/astar'
 import { Dijkstra } from '../algorithms/dijkstra'
@@ -327,6 +328,34 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
                 {showRender ? 'Hide render' : 'Show render (SLOW)'}
               </Button>
             </Flex>
+            <Flex>
+              <Table>
+                <TableCaption placement='top'>Output table</TableCaption>
+                <Thead>
+                  <Tr>
+                    <Th>Algorithm</Th>
+                    <Th>Duration (ms)</Th>
+                    <Th>Path length</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {output?.algorithm?.map((_, i) => (
+                    <Tr key={i}>
+                      <Td>{output.algorithm[i]}</Td>
+                      <Td>{output.duration[i]}</Td>
+                      <Td>{output.pathLength[i].toFixed(2)}</Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </Flex>
+          </Flex>
+          <Flex
+            direction='column'
+            pl={5}
+            border='1px black dotted'
+            alignItems='center'
+          >
             <Heading as='h3' size='lg'>
               Maze{' '}
               {showPreview && !showRender
@@ -334,6 +363,17 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
                 : showPreview && showRender
                 ? 'preview and render'
                 : 'render'}
+            </Heading>
+            <Heading as='h6' size='xs' mt={2}>
+              Path in{' '}
+              <Text as='span' color='rgb(231,76,60)'>
+                red
+              </Text>
+              , jump points in{' '}
+              <Text as='span' color='rgb(0,64,255)'>
+                blue
+              </Text>
+              !
             </Heading>
             {showPreview ? (
               <Flex flexDir='row'>
@@ -350,27 +390,6 @@ const Algorithms: React.FC<AlgorithmsProps> = ({ mapName }) => {
             ) : (
               <> </>
             )}
-          </Flex>
-          <Flex>
-            <Table>
-              <TableCaption placement='top'>Output table</TableCaption>
-              <Thead>
-                <Tr>
-                  <Th>Algorithm</Th>
-                  <Th>Duration (ms)</Th>
-                  <Th>Path length</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {output?.algorithm?.map((_, i) => (
-                  <Tr key={i}>
-                    <Td>{output.algorithm[i]}</Td>
-                    <Td>{output.duration[i]}</Td>
-                    <Td>{output.pathLength[i].toFixed(2)}</Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
           </Flex>
         </Flex>
       ) : (

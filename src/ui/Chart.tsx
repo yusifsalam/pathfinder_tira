@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { Heading, Text } from '@chakra-ui/react'
 
 interface ChartProps {
   data: number[][]
@@ -61,17 +60,6 @@ const Chart: React.FC<ChartProps> = ({ data, size }) => {
   }
   return (
     <div>
-      <Heading as='h6' size='xs' mt={2}>
-        Path in{' '}
-        <Text as='span' color='rgb(231,76,60)'>
-          red
-        </Text>
-        , jump points in{' '}
-        <Text as='span' color='rgb(0,64,255)'>
-          blue
-        </Text>
-        !
-      </Heading>
       <ReactEcharts
         option={getOptions()}
         style={{ height: '1024px', width: '1024px', padding: 0, margin: 0 }}
