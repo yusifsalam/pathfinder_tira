@@ -55,6 +55,8 @@ Image below demonstrates the differences between the shortest paths: from left t
 <img width="200" src='images/astar_maze0.svg'/>
 <img width="200" src='images/jps_maze0.svg'/>
 
+It can be seen that while Dijkstra and A* have paths that are very similar, JPS takes a different approach. Dijkstra and A* start with horizontal movements and then the last bout is accross a diagonal, while the JPS algorithm starts with diagonal movements and finishes with horizontal movement.
+
 #### Comparing performance
 
 It is clear that JPS is the superior pathfinding algorithm from the three tested ones, at least in the context of this project's algorithm implementations.
