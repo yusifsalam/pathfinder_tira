@@ -51,9 +51,11 @@ Below is the path solved by the JPS algorithm. Blue dots are the jump points.
 While the three algorithms all return the shortest path, it is curious that the actual paths are very different.
 Image below demonstrates the differences between the shortest paths: from left to right is Dijkstra, A\* and JPS.
 
-<img width="200" src='images/dijkstra_maze0.svg'/>
-<img width="200" src='images/astar_maze0.svg'/>
-<img width="200" src='images/jps_maze0.svg'/>
+<table><tr>
+<td><img width="200" src='images/dijkstra_maze0.svg'/></td>
+<td><img width="200" src='images/astar_maze0.svg'/></td>
+<td><img width="200" src='images/jps_maze0.svg'/></td>
+</tr></table>
 
 It can be seen that while Dijkstra and A* have paths that are very similar, JPS takes a different approach. Dijkstra and A* start with horizontal movements and then the last bout is accross a diagonal, while the JPS algorithm starts with diagonal movements and finishes with horizontal movement.
 
